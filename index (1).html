@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reislijst Caravan</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f6ff;padding:16px;min-height:100vh}
+  h1{font-size:1.4rem;font-weight:700;color:#1565C0;text-align:center;cursor:pointer;display:inline-block;border-radius:6px;padding:2px 8px}
+  h1:hover{background:#dceeff}
+  .title-wrap{text-align:center;margin-bottom:4px}
+  .title-inp{font-size:1.4rem;font-weight:700;color:#1565C0;border:2px solid #90CAF9;border-radius:6px;padding:2px 8px;outline:none;font-family:inherit;text-align:center;width:320px}
+  .sub{font-size:0.8rem;color:#7a9cc4;text-align:center;margin-bottom:10px}
+  .prog-wrap{background:#dce9f8;border-radius:99px;height:7px;max-width:360px;margin:0 auto 4px;overflow:hidden}
+  .prog-bar{height:100%;background:linear-gradient(90deg,#1565C0,#42A5F5);border-radius:99px;transition:width 0.4s}
+  .prog-lbl{font-size:0.75rem;color:#5a87c0;text-align:center;margin-bottom:10px}
+  .sync-row{text-align:center;margin-bottom:10px;font-size:0.7rem;color:#7a9cc4;display:flex;align-items:center;justify-content:center;gap:5px}
+  .dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite;flex-shrink:0}
+  .dot.off{background:#ff9800;animation:none}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+  .toolbar{display:flex;justify-content:flex-end;gap:8px;max-width:900px;margin:0 auto 12px}
+  .btn{font-family:inherit;font-size:0.75rem;padding:5px 12px;border-radius:8px;border:1.5px solid #90CAF9;background:white;color:#1565C0;cursor:pointer;font-weight:600}
+  .btn:hover{background:#e3f2fd}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;max-width:900px;margin:0 auto}
+  .section{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.07);overflow:hidden}
+  .sec-head{background:#BBDEFB;padding:8px 10px 6px;display:flex;align-items:center;gap:5px}
+  .sec-title{font-size:0.78rem;font-weight:700;color:#0D47A1;cursor:pointer;flex:1;border-radius:3px;padding:1px 3px}
+  .sec-title:hover{background:rgba(255,255,255,0.5)}
+  .sec-title-inp{font-size:0.78rem;font-weight:700;color:#0D47A1;border:1.5px solid #1565C0;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;flex:1;min-width:0}
+  .sec-count{font-size:0.68rem;background:white;color:#5a8fd4;border-radius:99px;padding:1px 7px;font-weight:600;flex-shrink:0}
+  .del-sec{font-size:0.7rem;color:#90CAF9;cursor:pointer;background:none;border:none;padding:1px 4px;border-radius:3px;flex-shrink:0;font-family:inherit}
+  .del-sec:hover{color:#e53935;background:rgba(255,255,255,0.6)}
+  .items{padding:4px 0}
+  .item{display:flex;align-items:center;gap:8px;padding:4px 12px;cursor:pointer;border-radius:4px;margin:1px 4px;user-select:none}
+  .item:hover{background:#f0f7ff}
+  .item.done{opacity:0.4}
+  .item.done .lbl{text-decoration:line-through}
+  .box{width:15px;height:15px;border:1.5px solid #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;transition:all 0.15s}
+  .item.done .box{background:#1565C0;border-color:#1565C0}
+  .lbl{font-size:0.78rem;color:#1e2d3d;flex:1;line-height:1.3}
+  .del-item{font-size:0.7rem;color:#ccc;opacity:0;padding:1px 3px;border-radius:3px;border:none;background:transparent;cursor:pointer;flex-shrink:0;font-family:inherit}
+  .item:hover .del-item{opacity:1}
+  .del-item:hover{color:#e53935;background:#ffeaea}
+  .add-row{display:flex;align-items:center;gap:8px;padding:4px 12px 8px;border-top:1px dashed #dce9f8;margin-top:3px}
+  .add-box{width:15px;height:15px;border:1.5px dashed #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#90CAF9;font-weight:700}
+  .add-inp{flex:1;border:none;outline:none;font-family:inherit;font-size:0.78rem;color:#1e2d3d;background:transparent}
+  .add-inp::placeholder{color:#b0c8e8}
+  .add-sec-wrap{max-width:900px;margin:12px auto 0}
+  .add-sec-btn{width:100%;font-family:inherit;font-size:0.78rem;color:#1565C0;border:1.5px dashed #90CAF9;background:white;border-radius:14px;padding:10px;cursor:pointer;font-weight:600}
+  .add-sec-btn:hover{background:#e3f2fd}
+  .status{font-size:0.7rem;color:#7a9cc4;text-align:center;margin-top:8px;min-height:16px}
+
+  /* Firebase config banner */
+  .config-banner{background:#fff8e1;border:1.5px solid #ffe082;border-radius:12px;padding:16px 20px;max-width:600px;margin:0 auto 20px;font-size:0.82rem;color:#5d4037;line-height:1.7}
+  .config-banner h2{font-size:0.95rem;color:#e65100;margin-bottom:8px}
+  .config-banner code{background:#fff3e0;padding:1px 5px;border-radius:4px;font-size:0.78rem;font-family:monospace}
+  .config-banner a{color:#1565C0}
+
+  @media print{.toolbar,.add-row,.del-item,.del-sec,.add-sec-wrap,.config-banner,.sync-row{display:none!important}.section{box-shadow:none;border:1px solid #dce9f8}}
+</style>
+</head>
+<body>
+
+<div id="configBanner" class="config-banner" style="display:none">
+  <h2>⚙️ Firebase nog niet ingesteld</h2>
+  Volg de stappen in de README om Firebase te koppelen. Vervang daarna de waarden in de <code>firebaseConfig</code> bovenaan dit bestand.<br>
+  Zonder Firebase werkt de checklist lokaal, maar zonder synchronisatie tussen apparaten.
+</div>
+
+<div class="title-wrap">
+  <h1 id="mainTitle">🚐 Reislijst Caravan</h1>
+</div>
+<div class="sub">Klik om af te vinken · Enter om toe te voegen · Wijzigingen verschijnen bij iedereen</div>
+<div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
+<div class="prog-lbl" id="pl">laden...</div>
+<div class="sync-row"><div class="dot off" id="dot"></div><span id="syncLbl">Verbinden...</span></div>
+<div class="toolbar">
+  <button class="btn" onclick="resetChecked()">↺ Alles resetten</button>
+  <button class="btn" onclick="window.print()">🖨 Afdrukken</button>
+</div>
+<div class="grid" id="grid"></div>
+<div class="add-sec-wrap">
+  <button class="add-sec-btn" onclick="addSection()">+ Nieuwe categorie toevoegen</button>
+</div>
+<div class="status" id="status"></div>
+
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+// ============================================================
+// 🔧 VERVANG DEZE WAARDEN MET JOUW FIREBASE CONFIG
+// (zie README voor hoe je die krijgt)
+// ============================================================
+const firebaseConfig = {
+  apiKey:            "AIzaSyAXPAjc_gV56nSH7pEwa4aICVAjaoNx7kc",
+  authDomain:        "reislijst-caravan.firebaseapp.com",
+  databaseURL:       "https://reislijst-caravan-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId:         "reislijst-caravan",
+  storageBucket:     "reislijst-caravan.firebasestorage.app",
+  messagingSenderId: "992765711731",
+  appId:             "1:992765711731:web:37cdf225b60242d88b2106"
+};
+// ============================================================
+
+const defaultSections = [
+  {title:"📱 Elektronica",items:["GSM","GSM-laders","GSM-oortjes","E-reader + lader","Notitieboek voor onderweg","Gezelschapsspelletjes"]},
+  {title:"👩 Madelief – Toilet",items:["Douchegel","Shampoo + conditioner","Tandpasta + tandenborstel","Oplader el. tandenborstel","Scheermesjes","Oorbellen","Inlegkruisjes","Medicatie (foliumzuur + vitaminen)"]},
+  {title:"🍳 Keuken",items:["Servietten","Croque-ingrediënten (brood, kaas, ham)","Boter","Mayonaise / vinaigrette","Confituur / choco","Muizenstrontjes","Roico soep","Chips + versnapering","Eten zaterdag middag"]},
+  {title:"👗 Madelief – Kledij",items:["Bikini","Kleedjes","1 BH","2 shorts","2 lange broeken / salopette","2 warmere truien / fleece","2 pyjama's","Jas","9 onderbroeken + 9 kousen","Teenslippers / sandalen / schoenen","Zonnebril","Training om te douchen"]},
+  {title:"🥤 Drank",items:["Melk","Water (plat + spuit)","Chocomelk","Frisdrank (cola, ...)"]},
+  {title:"👨 Arne – Toilet",items:["Douchegel (Axa + Uriage) / shampoo","Sensibio gezichtsreiniger","Tandpasta + tandenborstel","Oplader el. tandenborstel","Scheergerief","Lensenmateriaal + lenzenvocht","Reserve lenzen","Bril"]},
+  {title:"💊 Apotheek",items:["Paracetamol","Buscopan","Flamigel","Fenigel","Aftersun","Zonemelk","Omnibionta","Elocom (beide tubes)","Body lotion (day/night – Kruidvat)"]},
+  {title:"👖 Arne – Kledij",items:["Hemd / T-shirts / polo's","2 lange broeken","2 warmere truien","2 pyjama's","Jas","Zwembroek","9 onderbroeken + 9 kousen","Schoenen / teenslippers","Zonnebril","Training om te douchen"]},
+  {title:"🚿 Badkamer",items:["Haarborstel","Haardroger / blazer","Schmink","Zak om te gaan douchen","Zakdoeken"]},
+];
+
+let state = { mainTitle:"🚐 Reislijst Caravan", sections: JSON.parse(JSON.stringify(defaultSections)), checked:{} };
+let db = null;
+let dbRef = null;
+let ignoreNextUpdate = false;
+
+function showStatus(msg, ms=2000){
+  const el=document.getElementById('status');
+  el.textContent=msg;
+  if(ms) setTimeout(()=>{ if(el.textContent===msg) el.textContent=''; },ms);
+}
+
+function setSyncStatus(online, msg){
+  const dot=document.getElementById('dot');
+  const lbl=document.getElementById('syncLbl');
+  dot.className='dot'+(online?'':' off');
+  lbl.textContent=msg;
+}
+
+// Check if firebase is configured
+const configured = firebaseConfig.apiKey !== "JOUW_API_KEY";
+
+if(!configured){
+  document.getElementById('configBanner').style.display='block';
+  setSyncStatus(false,'Geen synchronisatie (Firebase niet ingesteld)');
+  render();
+} else {
+  try {
+    const app = initializeApp(firebaseConfig);
+    db = getDatabase(app);
+    dbRef = ref(db, 'checklist');
+
+    onValue(dbRef, (snapshot) => {
+      if(ignoreNextUpdate){ ignoreNextUpdate=false; return; }
+      const data = snapshot.val();
+      if(data){
+        state = data;
+        render();
+      } else {
+        save();
+      }
+      setSyncStatus(true, 'Gesynchroniseerd');
+    }, (err) => {
+      setSyncStatus(false, 'Verbindingsfout');
+      render();
+    });
+  } catch(e){
+    setSyncStatus(false, 'Firebase fout: '+e.message);
+    render();
+  }
+}
+
+async function save(){
+  if(!db){ render(); return; }
+  try{
+    ignoreNextUpdate = true;
+    await set(dbRef, state);
+    setSyncStatus(true,'Opgeslagen');
+    showStatus('Opgeslagen');
+  } catch(e){
+    setSyncStatus(false,'Opslaan mislukt');
+    showStatus('Opslaan mislukt');
+  }
+}
+
+// --- Title editing ---
+window.editTitle = function(){
+  const el=document.getElementById('mainTitle');
+  const inp=document.createElement('input');
+  inp.className='title-inp';
+  inp.value=state.mainTitle;
+  el.replaceWith(inp);
+  inp.focus(); inp.select();
+  function commit(){
+    state.mainTitle=inp.value.trim()||state.mainTitle;
+    save(); render();
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+};
+document.getElementById('mainTitle').onclick=window.editTitle;
+
+window.editSecTitle = function(si){
+  const span=document.getElementById('sec-title-'+si);
+  if(!span) return;
+  const inp=document.createElement('input');
+  inp.className='sec-title-inp';
+  inp.value=state.sections[si].title;
+  span.replaceWith(inp);
+  inp.focus(); inp.select();
+  function commit(){
+    state.sections[si].title=inp.value.trim()||state.sections[si].title;
+    save(); render();
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+};
+
+window.addSection = function(){
+  state.sections.push({title:"Nieuwe categorie",items:[]});
+  save(); render();
+  setTimeout(()=>window.editSecTitle(state.sections.length-1),30);
+};
+
+window.deleteSection = function(si){
+  if(!confirm(`Categorie "${state.sections[si].title}" verwijderen?`)) return;
+  state.sections.splice(si,1);
+  const newChecked={};
+  Object.keys(state.checked||{}).forEach(k=>{
+    const parts=k.split('-'); const kidx=parseInt(parts[0]);
+    if(kidx<si) newChecked[k]=state.checked[k];
+    else if(kidx>si) newChecked[(kidx-1)+'-'+parts.slice(1).join('-')]=state.checked[k];
+  });
+  state.checked=newChecked;
+  save(); render();
+};
+
+window.toggleItem = function(si, ii){
+  if(!state.checked) state.checked={};
+  const k=`${si}-${ii}`;
+  state.checked[k]=!state.checked[k];
+  render(); save();
+};
+
+window.addItem = function(si, input){
+  const v=input.value.trim();
+  if(!v) return;
+  state.sections[si].items.push(v);
+  input.value='';
+  save(); render();
+  setTimeout(()=>{ const ins=document.querySelectorAll('.add-inp'); if(ins[si]) ins[si].focus(); },20);
+};
+
+window.delItem = function(si, ii){
+  state.sections[si].items.splice(ii,1);
+  const newChecked={};
+  Object.keys(state.checked||{}).forEach(k=>{
+    const parts=k.split('-');
+    if(parseInt(parts[0])!==si){ newChecked[k]=state.checked[k]; return; }
+    const idx=parseInt(parts[1]);
+    if(idx<ii) newChecked[k]=state.checked[k];
+    else if(idx>ii) newChecked[`${si}-${idx-1}`]=state.checked[k];
+  });
+  state.checked=newChecked;
+  save(); render();
+};
+
+window.resetChecked = function(){
+  if(!confirm('Alle vinkjes resetten voor iedereen?')) return;
+  state.checked={};
+  save(); render();
+};
+
+function render(){
+  const titleEl=document.getElementById('mainTitle');
+  if(titleEl) titleEl.textContent=state.mainTitle;
+
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  let total=0, done=0;
+
+  (state.sections||[]).forEach((sec,si)=>{
+    let secDone=0;
+    const div=document.createElement('div'); div.className='section';
+    const head=document.createElement('div'); head.className='sec-head';
+    const titleSpan=document.createElement('span');
+    titleSpan.className='sec-title'; titleSpan.id='sec-title-'+si;
+    titleSpan.textContent=sec.title; titleSpan.title='Klik om te bewerken';
+    titleSpan.onclick=()=>window.editSecTitle(si);
+    const cnt=document.createElement('span'); cnt.className='sec-count';
+    const delBtn=document.createElement('button'); delBtn.className='del-sec';
+    delBtn.textContent='✕'; delBtn.title='Verwijderen';
+    delBtn.onclick=(e)=>{ e.stopPropagation(); window.deleteSection(si); };
+    head.appendChild(titleSpan); head.appendChild(cnt); head.appendChild(delBtn);
+
+    const itemsDiv=document.createElement('div'); itemsDiv.className='items';
+    (sec.items||[]).forEach((item,ii)=>{
+      const k=`${si}-${ii}`;
+      const checked=!!(state.checked&&state.checked[k]);
+      if(checked) secDone++;
+      total++; if(checked) done++;
+      const row=document.createElement('div'); row.className='item'+(checked?' done':'');
+      const box=document.createElement('div'); box.className='box';
+      if(checked) box.textContent='✓';
+      const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent=item;
+      const del=document.createElement('button'); del.className='del-item'; del.textContent='✕';
+      del.onclick=(e)=>{ e.stopPropagation(); window.delItem(si,ii); };
+      row.onclick=()=>window.toggleItem(si,ii);
+      row.appendChild(box); row.appendChild(lbl); row.appendChild(del);
+      itemsDiv.appendChild(row);
+    });
+    cnt.textContent=`${secDone}/${sec.items.length}`;
+
+    const addRow=document.createElement('div'); addRow.className='add-row';
+    addRow.innerHTML='<div class="add-box">+</div><input class="add-inp" placeholder="Toevoegen…">';
+    const inp=addRow.querySelector('.add-inp');
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') window.addItem(si,inp); });
+    itemsDiv.appendChild(addRow);
+
+    div.appendChild(head); div.appendChild(itemsDiv);
+    grid.appendChild(div);
+  });
+
+  const pct=total?Math.round(done/total*100):0;
+  document.getElementById('pb').style.width=pct+'%';
+  document.getElementById('pl').textContent=`${done} van ${total} ingepakt (${pct}%)`;
+}
+</script>
+</body>
+</html>
