@@ -3,97 +3,199 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Reislijst Caravan</title>
+<title>Mijn Checklists</title>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f6ff;padding:16px;min-height:100vh}
-  h1{font-size:1.4rem;font-weight:700;color:#1565C0;text-align:center;cursor:pointer;display:inline-block;border-radius:6px;padding:2px 8px}
-  h1:hover{background:#dceeff}
-  .title-wrap{text-align:center;margin-bottom:4px}
-  .title-inp{font-size:1.4rem;font-weight:700;color:#1565C0;border:2px solid #90CAF9;border-radius:6px;padding:2px 8px;outline:none;font-family:inherit;text-align:center;width:320px}
-  .sub{font-size:0.8rem;color:#7a9cc4;text-align:center;margin-bottom:10px}
-  .prog-wrap{background:#dce9f8;border-radius:99px;height:7px;max-width:360px;margin:0 auto 4px;overflow:hidden}
-  .prog-bar{height:100%;background:linear-gradient(90deg,#1565C0,#42A5F5);border-radius:99px;transition:width 0.4s}
-  .prog-lbl{font-size:0.75rem;color:#5a87c0;text-align:center;margin-bottom:10px}
-  .sync-row{text-align:center;margin-bottom:10px;font-size:0.7rem;color:#7a9cc4;display:flex;align-items:center;justify-content:center;gap:5px}
-  .dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite;flex-shrink:0}
-  .dot.off{background:#ff9800;animation:none}
-  @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-  .toolbar{display:flex;justify-content:flex-end;gap:8px;max-width:900px;margin:0 auto 12px}
-  .btn{font-family:inherit;font-size:0.75rem;padding:5px 12px;border-radius:8px;border:1.5px solid #90CAF9;background:white;color:#1565C0;cursor:pointer;font-weight:600}
-  .btn:hover{background:#e3f2fd}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;max-width:900px;margin:0 auto}
-  .section{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.07);overflow:hidden}
-  .sec-head{background:#BBDEFB;padding:8px 10px 6px;display:flex;align-items:center;gap:5px}
-  .sec-title{font-size:0.78rem;font-weight:700;color:#0D47A1;cursor:pointer;flex:1;border-radius:3px;padding:1px 3px}
-  .sec-title:hover{background:rgba(255,255,255,0.5)}
-  .sec-title-inp{font-size:0.78rem;font-weight:700;color:#0D47A1;border:1.5px solid #1565C0;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;flex:1;min-width:0}
-  .sec-count{font-size:0.68rem;background:white;color:#5a8fd4;border-radius:99px;padding:1px 7px;font-weight:600;flex-shrink:0}
-  .del-sec{font-size:0.7rem;color:#90CAF9;cursor:pointer;background:none;border:none;padding:1px 4px;border-radius:3px;flex-shrink:0;font-family:inherit}
-  .del-sec:hover{color:#e53935;background:rgba(255,255,255,0.6)}
-  .items{padding:4px 0}
-  .item{display:flex;align-items:center;gap:8px;padding:4px 12px;cursor:pointer;border-radius:4px;margin:1px 4px;user-select:none}
-  .item:hover{background:#f0f7ff}
-  .item.done{opacity:0.4}
-  .item.done .lbl{text-decoration:line-through}
-  .box{width:15px;height:15px;border:1.5px solid #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;transition:all 0.15s}
-  .item.done .box{background:#1565C0;border-color:#1565C0}
-  .lbl{font-size:0.78rem;color:#1e2d3d;flex:1;line-height:1.3}
-  .del-item{font-size:0.7rem;color:#ccc;opacity:0;padding:1px 3px;border-radius:3px;border:none;background:transparent;cursor:pointer;flex-shrink:0;font-family:inherit}
-  .item:hover .del-item{opacity:1}
-  .del-item:hover{color:#e53935;background:#ffeaea}
-  .add-row{display:flex;align-items:center;gap:8px;padding:4px 12px 8px;border-top:1px dashed #dce9f8;margin-top:3px}
-  .add-box{width:15px;height:15px;border:1.5px dashed #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#90CAF9;font-weight:700}
-  .add-inp{flex:1;border:none;outline:none;font-family:inherit;font-size:0.78rem;color:#1e2d3d;background:transparent}
-  .add-inp::placeholder{color:#b0c8e8}
-  .add-sec-wrap{max-width:900px;margin:12px auto 0}
-  .add-sec-btn{width:100%;font-family:inherit;font-size:0.78rem;color:#1565C0;border:1.5px dashed #90CAF9;background:white;border-radius:14px;padding:10px;cursor:pointer;font-weight:600}
-  .add-sec-btn:hover{background:#e3f2fd}
-  .status{font-size:0.7rem;color:#7a9cc4;text-align:center;margin-top:8px;min-height:16px}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f6ff;min-height:100vh}
 
-  /* Firebase config banner */
-  .config-banner{background:#fff8e1;border:1.5px solid #ffe082;border-radius:12px;padding:16px 20px;max-width:600px;margin:0 auto 20px;font-size:0.82rem;color:#5d4037;line-height:1.7}
-  .config-banner h2{font-size:0.95rem;color:#e65100;margin-bottom:8px}
-  .config-banner code{background:#fff3e0;padding:1px 5px;border-radius:4px;font-size:0.78rem;font-family:monospace}
-  .config-banner a{color:#1565C0}
+/* ── TOPBAR ── */
+.topbar{background:#1565C0;color:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
+.topbar-left{display:flex;align-items:center;gap:10px}
+.back-btn{background:rgba(255,255,255,0.15);border:none;color:white;border-radius:8px;padding:5px 10px;cursor:pointer;font-family:inherit;font-size:0.8rem;display:none}
+.back-btn:hover{background:rgba(255,255,255,0.25)}
+.topbar h1{font-size:1rem;font-weight:700;color:white}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.sync-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite;flex-shrink:0}
+.sync-dot.off{background:#ff9800;animation:none}
+.sync-lbl{font-size:0.7rem;color:rgba(255,255,255,0.8)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
-  @media print{.toolbar,.add-row,.del-item,.del-sec,.add-sec-wrap,.config-banner,.sync-row{display:none!important}.section{box-shadow:none;border:1px solid #dce9f8}}
+/* ── VIEWS ── */
+.view{display:none;padding:20px}
+.view.active{display:block}
+
+/* ── HOME ── */
+.home-tabs{display:flex;gap:0;max-width:900px;margin:0 auto 20px;border-bottom:2px solid #BBDEFB}
+.tab-btn{font-family:inherit;font-size:0.85rem;font-weight:600;padding:8px 20px;border:none;background:transparent;color:#7a9cc4;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab-btn.active{color:#1565C0;border-bottom-color:#1565C0}
+.tab-content{display:none;max-width:900px;margin:0 auto}
+.tab-content.active{display:block}
+
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.list-card{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.08);padding:16px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;position:relative}
+.list-card:hover{border-color:#90CAF9;box-shadow:0 4px 16px rgba(21,101,192,0.14)}
+.list-card h3{font-size:0.95rem;font-weight:700;color:#1e2d3d;margin-bottom:6px;padding-right:24px}
+.list-card .meta{font-size:0.75rem;color:#7a9cc4}
+.list-card .prog{height:4px;background:#e3f2fd;border-radius:99px;margin-top:10px;overflow:hidden}
+.list-card .prog-fill{height:100%;background:#1565C0;border-radius:99px}
+.list-card .card-del{position:absolute;top:10px;right:10px;background:none;border:none;color:#ccc;cursor:pointer;font-size:0.8rem;padding:2px 5px;border-radius:4px}
+.list-card .card-del:hover{color:#e53935;background:#ffeaea}
+.template-badge{display:inline-block;font-size:0.65rem;font-weight:700;background:#e3f2fd;color:#1565C0;border-radius:99px;padding:1px 8px;margin-bottom:6px}
+
+.new-card{background:white;border-radius:14px;border:2px dashed #90CAF9;padding:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:100px;transition:all 0.15s}
+.new-card:hover{background:#e3f2fd;border-color:#1565C0}
+.new-card span{font-size:1.5rem;color:#90CAF9}
+.new-card p{font-size:0.8rem;color:#7a9cc4;font-weight:600}
+
+/* ── MODAL ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:white;border-radius:16px;padding:24px;width:100%;max-width:440px;box-shadow:0 8px 40px rgba(0,0,0,0.15)}
+.modal h2{font-size:1rem;font-weight:700;color:#1e2d3d;margin-bottom:16px}
+.modal label{font-size:0.78rem;color:#5a87c0;font-weight:600;display:block;margin-bottom:4px;margin-top:12px}
+.modal input{width:100%;border:1.5px solid #BBDEFB;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:0.88rem;outline:none;color:#1e2d3d}
+.modal input:focus{border-color:#1565C0}
+.template-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.template-opt{border:1.5px solid #BBDEFB;border-radius:8px;padding:8px 10px;cursor:pointer;font-family:inherit;font-size:0.78rem;color:#1e2d3d;background:white;text-align:left;font-weight:600;transition:all 0.15s}
+.template-opt:hover{border-color:#1565C0;background:#e3f2fd;color:#1565C0}
+.template-opt.selected{border-color:#1565C0;background:#1565C0;color:white}
+.template-opt.blank{border-style:dashed;color:#7a9cc4}
+.modal-btns{display:flex;gap:8px;margin-top:20px;justify-content:flex-end}
+.modal-btns button{font-family:inherit;font-size:0.82rem;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;border:1.5px solid #BBDEFB;background:white;color:#1565C0}
+.modal-btns .primary{background:#1565C0;color:white;border-color:#1565C0}
+.modal-btns button:hover{opacity:0.85}
+
+/* ── CHECKLIST VIEW ── */
+.checklist-header{max-width:900px;margin:0 auto 14px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.checklist-title-wrap{display:flex;align-items:center;gap:6px}
+.checklist-title{font-size:1.3rem;font-weight:700;color:#1565C0;cursor:pointer;border-radius:6px;padding:2px 8px}
+.checklist-title:hover{background:#dceeff}
+.checklist-title-inp{font-size:1.3rem;font-weight:700;color:#1565C0;border:2px solid #90CAF9;border-radius:6px;padding:2px 8px;outline:none;font-family:inherit;text-align:center;width:300px}
+.checklist-sub{font-size:0.75rem;color:#7a9cc4}
+.prog-wrap{background:#dce9f8;border-radius:99px;height:7px;max-width:360px;width:100%;overflow:hidden}
+.prog-bar{height:100%;background:linear-gradient(90deg,#1565C0,#42A5F5);border-radius:99px;transition:width 0.4s}
+.prog-lbl{font-size:0.72rem;color:#5a87c0}
+.cl-toolbar{display:flex;justify-content:flex-end;gap:8px;max-width:900px;margin:0 auto 12px}
+.btn{font-family:inherit;font-size:0.75rem;font-weight:600;padding:5px 12px;border-radius:8px;border:1.5px solid #90CAF9;background:white;color:#1565C0;cursor:pointer}
+.btn:hover{background:#e3f2fd}
+.btn.danger{border-color:#ffcdd2;color:#e53935}
+.btn.danger:hover{background:#ffeaea}
+
+/* ── GRID & SECTIONS ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;max-width:900px;margin:0 auto}
+.section{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.07);overflow:hidden}
+.sec-head{background:#BBDEFB;padding:8px 10px 6px;display:flex;align-items:center;gap:5px}
+.sec-title{font-size:0.78rem;font-weight:700;color:#0D47A1;cursor:pointer;flex:1;border-radius:3px;padding:1px 3px}
+.sec-title:hover{background:rgba(255,255,255,0.5)}
+.sec-title-inp{font-size:0.78rem;font-weight:700;color:#0D47A1;border:1.5px solid #1565C0;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;flex:1;min-width:0}
+.sec-count{font-size:0.68rem;background:white;color:#5a8fd4;border-radius:99px;padding:1px 7px;font-weight:600;flex-shrink:0}
+.del-sec{font-size:0.7rem;color:#90CAF9;cursor:pointer;background:none;border:none;padding:1px 4px;border-radius:3px;flex-shrink:0;font-family:inherit}
+.del-sec:hover{color:#e53935;background:rgba(255,255,255,0.6)}
+.items{padding:4px 0}
+.item{display:flex;align-items:center;gap:8px;padding:4px 12px;border-radius:4px;margin:1px 4px}
+.item.done{opacity:0.4}
+.item.done .lbl{text-decoration:line-through}
+.box{width:15px;height:15px;border:1.5px solid #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;cursor:pointer;transition:all 0.15s}
+.item.done .box{background:#1565C0;border-color:#1565C0}
+.lbl{font-size:0.78rem;color:#1e2d3d;flex:1;line-height:1.3;cursor:pointer;border-radius:3px;padding:1px 3px}
+.lbl:hover{background:#e3f2fd}
+.lbl-inp{font-size:0.78rem;color:#1e2d3d;flex:1;border:1.5px solid #90CAF9;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;min-width:0}
+.del-item{font-size:0.7rem;color:#ccc;opacity:0;padding:1px 3px;border-radius:3px;border:none;background:transparent;cursor:pointer;flex-shrink:0;font-family:inherit}
+.item:hover .del-item{opacity:1}
+.del-item:hover{color:#e53935;background:#ffeaea}
+.add-row{display:flex;align-items:center;gap:8px;padding:4px 12px 8px;border-top:1px dashed #dce9f8;margin-top:3px}
+.add-box{width:15px;height:15px;border:1.5px dashed #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#90CAF9;font-weight:700}
+.add-inp{flex:1;border:none;outline:none;font-family:inherit;font-size:0.78rem;color:#1e2d3d;background:transparent}
+.add-inp::placeholder{color:#b0c8e8}
+.add-sec-wrap{max-width:900px;margin:12px auto 0}
+.add-sec-btn{width:100%;font-family:inherit;font-size:0.78rem;color:#1565C0;border:1.5px dashed #90CAF9;background:white;border-radius:14px;padding:10px;cursor:pointer;font-weight:600}
+.add-sec-btn:hover{background:#e3f2fd}
+.status{font-size:0.7rem;color:#7a9cc4;text-align:center;margin-top:8px;min-height:16px}
+
+@media print{.topbar,.cl-toolbar,.add-row,.del-item,.del-sec,.add-sec-wrap,.status{display:none!important}.section{box-shadow:none;border:1px solid #dce9f8}}
 </style>
 </head>
 <body>
 
-<div id="configBanner" class="config-banner" style="display:none">
-  <h2>⚙️ Firebase nog niet ingesteld</h2>
-  Volg de stappen in de README om Firebase te koppelen. Vervang daarna de waarden in de <code>firebaseConfig</code> bovenaan dit bestand.<br>
-  Zonder Firebase werkt de checklist lokaal, maar zonder synchronisatie tussen apparaten.
+<div class="topbar">
+  <div class="topbar-left">
+    <button class="back-btn" id="backBtn" onclick="goHome()">← Terug</button>
+    <h1 id="topbarTitle">Mijn Checklists</h1>
+  </div>
+  <div class="topbar-right">
+    <div class="sync-dot off" id="dot"></div>
+    <span class="sync-lbl" id="syncLbl">Verbinden...</span>
+  </div>
 </div>
 
-<div class="title-wrap">
-  <h1 id="mainTitle">🚐 Reislijst Caravan</h1>
+<!-- HOME VIEW -->
+<div class="view active" id="homeView">
+  <div class="home-tabs">
+    <button class="tab-btn active" onclick="switchTab('lists')">📋 Mijn lijsten</button>
+    <button class="tab-btn" onclick="switchTab('templates')">📁 Templates</button>
+  </div>
+  <div class="tab-content active" id="tab-lists">
+    <div class="card-grid" id="listsGrid"></div>
+  </div>
+  <div class="tab-content" id="tab-templates">
+    <div class="card-grid" id="templatesGrid"></div>
+  </div>
 </div>
-<div class="sub">Klik om af te vinken · Enter om toe te voegen · Wijzigingen verschijnen bij iedereen</div>
-<div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
-<div class="prog-lbl" id="pl">laden...</div>
-<div class="sync-row"><div class="dot off" id="dot"></div><span id="syncLbl">Verbinden...</span></div>
-<div class="toolbar">
-  <button class="btn" onclick="resetChecked()">↺ Alles resetten</button>
-  <button class="btn" onclick="window.print()">🖨 Afdrukken</button>
-</div>
-<div class="grid" id="grid"></div>
-<div class="add-sec-wrap">
-  <button class="add-sec-btn" onclick="addSection()">+ Nieuwe categorie toevoegen</button>
-</div>
-<div class="status" id="status"></div>
 
-<!-- Firebase SDK -->
+<!-- CHECKLIST VIEW -->
+<div class="view" id="checklistView">
+  <div class="checklist-header">
+    <div class="checklist-title-wrap">
+      <div class="checklist-title" id="clTitle" onclick="editClTitle()">Laden...</div>
+    </div>
+    <div class="checklist-sub" id="clSub"></div>
+    <div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
+    <div class="prog-lbl" id="pl"></div>
+  </div>
+  <div class="cl-toolbar">
+    <button class="btn" onclick="saveAsTemplate()">💾 Opslaan als template</button>
+    <button class="btn" onclick="resetChecked()">↺ Vinkjes resetten</button>
+    <button class="btn" onclick="window.print()">🖨 Afdrukken</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div class="add-sec-wrap">
+    <button class="add-sec-btn" onclick="addSection()">+ Nieuwe categorie toevoegen</button>
+  </div>
+  <div class="status" id="status"></div>
+</div>
+
+<!-- NEW LIST MODAL -->
+<div class="modal-overlay" id="newListModal">
+  <div class="modal">
+    <h2>Nieuwe checklist</h2>
+    <label>Naam</label>
+    <input type="text" id="newListName" placeholder="bijv. Camping Frankrijk">
+    <label>Startpunt</label>
+    <div class="template-options" id="templateOptions"></div>
+    <div class="modal-btns">
+      <button onclick="closeModal('newListModal')">Annuleren</button>
+      <button class="primary" onclick="createList()">Aanmaken</button>
+    </div>
+  </div>
+</div>
+
+<!-- SAVE AS TEMPLATE MODAL -->
+<div class="modal-overlay" id="saveTemplateModal">
+  <div class="modal">
+    <h2>Opslaan als template</h2>
+    <label>Naam van de template</label>
+    <input type="text" id="templateName" placeholder="bijv. Caravan zomer">
+    <div class="modal-btns">
+      <button onclick="closeModal('saveTemplateModal')">Annuleren</button>
+      <button class="primary" onclick="confirmSaveTemplate()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, onValue, set, get, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-// ============================================================
-// 🔧 VERVANG DEZE WAARDEN MET JOUW FIREBASE CONFIG
-// (zie README voor hoe je die krijgt)
-// ============================================================
 const firebaseConfig = {
   apiKey:            "AIzaSyAXPAjc_gV56nSH7pEwa4aICVAjaoNx7kc",
   authDomain:        "reislijst-caravan.firebaseapp.com",
@@ -103,9 +205,8 @@ const firebaseConfig = {
   messagingSenderId: "992765711731",
   appId:             "1:992765711731:web:37cdf225b60242d88b2106"
 };
-// ============================================================
 
-const defaultSections = [
+const caravanSections = [
   {title:"📱 Elektronica",items:["GSM","GSM-laders","GSM-oortjes","E-reader + lader","Notitieboek voor onderweg","Gezelschapsspelletjes"]},
   {title:"👩 Madelief – Toilet",items:["Douchegel","Shampoo + conditioner","Tandpasta + tandenborstel","Oplader el. tandenborstel","Scheermesjes","Oorbellen","Inlegkruisjes","Medicatie (foliumzuur + vitaminen)"]},
   {title:"🍳 Keuken",items:["Servietten","Croque-ingrediënten (brood, kaas, ham)","Boter","Mayonaise / vinaigrette","Confituur / choco","Muizenstrontjes","Roico soep","Chips + versnapering","Eten zaterdag middag"]},
@@ -117,10 +218,51 @@ const defaultSections = [
   {title:"🚿 Badkamer",items:["Haarborstel","Haardroger / blazer","Schmink","Zak om te gaan douchen","Zakdoeken"]},
 ];
 
-let state = { mainTitle:"🚐 Reislijst Caravan", sections: JSON.parse(JSON.stringify(defaultSections)), checked:{} };
-let db = null;
-let dbRef = null;
-let ignoreNextUpdate = false;
+// ── STATE ──
+let db, appData = { lists:{}, templates:{} };
+let currentListId = null;
+let ignoreNext = false;
+
+// ── FIREBASE ──
+const app = initializeApp(firebaseConfig);
+db = getDatabase(app);
+const rootRef = ref(db, 'app');
+
+onValue(rootRef, snap => {
+  if(ignoreNext){ ignoreNext=false; return; }
+  const val = snap.val();
+  if(val){
+    appData = val;
+    // ensure templates exist
+    if(!appData.templates) appData.templates = {};
+    if(!appData.lists) appData.lists = {};
+  } else {
+    // First load — seed default template
+    appData = { lists:{}, templates:{} };
+    const tid = 'tpl_' + Date.now();
+    appData.templates[tid] = {
+      id: tid,
+      title: "Caravan-checklist Italië",
+      sections: JSON.parse(JSON.stringify(caravanSections)),
+      createdAt: Date.now()
+    };
+    saveAll();
+  }
+  setSyncStatus(true,'Gesynchroniseerd');
+  if(currentListId) renderChecklist();
+  else renderHome();
+}, err => setSyncStatus(false,'Verbindingsfout'));
+
+async function saveAll(){
+  ignoreNext = true;
+  await set(rootRef, appData);
+  setSyncStatus(true,'Opgeslagen');
+}
+
+function setSyncStatus(on, msg){
+  document.getElementById('dot').className='sync-dot'+(on?'':' off');
+  document.getElementById('syncLbl').textContent=msg;
+}
 
 function showStatus(msg, ms=2000){
   const el=document.getElementById('status');
@@ -128,191 +270,231 @@ function showStatus(msg, ms=2000){
   if(ms) setTimeout(()=>{ if(el.textContent===msg) el.textContent=''; },ms);
 }
 
-function setSyncStatus(online, msg){
-  const dot=document.getElementById('dot');
-  const lbl=document.getElementById('syncLbl');
-  dot.className='dot'+(online?'':' off');
-  lbl.textContent=msg;
-}
-
-// Check if firebase is configured
-const configured = firebaseConfig.apiKey !== "JOUW_API_KEY";
-
-if(!configured){
-  document.getElementById('configBanner').style.display='block';
-  setSyncStatus(false,'Geen synchronisatie (Firebase niet ingesteld)');
-  render();
-} else {
-  try {
-    const app = initializeApp(firebaseConfig);
-    db = getDatabase(app);
-    dbRef = ref(db, 'checklist');
-
-    onValue(dbRef, (snapshot) => {
-      if(ignoreNextUpdate){ ignoreNextUpdate=false; return; }
-      const data = snapshot.val();
-      if(data){
-        state = data;
-        render();
-      } else {
-        save();
-      }
-      setSyncStatus(true, 'Gesynchroniseerd');
-    }, (err) => {
-      setSyncStatus(false, 'Verbindingsfout');
-      render();
-    });
-  } catch(e){
-    setSyncStatus(false, 'Firebase fout: '+e.message);
-    render();
-  }
-}
-
-async function save(){
-  if(!db){ render(); return; }
-  try{
-    ignoreNextUpdate = true;
-    await set(dbRef, state);
-    setSyncStatus(true,'Opgeslagen');
-    showStatus('Opgeslagen');
-  } catch(e){
-    setSyncStatus(false,'Opslaan mislukt');
-    showStatus('Opslaan mislukt');
-  }
-}
-
-// --- Title editing ---
-window.editTitle = function(){
-  const el=document.getElementById('mainTitle');
-  const inp=document.createElement('input');
-  inp.className='title-inp';
-  inp.value=state.mainTitle;
-  el.replaceWith(inp);
-  inp.focus(); inp.select();
-  function commit(){
-    state.mainTitle=inp.value.trim()||state.mainTitle;
-    save(); render();
-  }
-  inp.addEventListener('blur',commit);
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
-};
-document.getElementById('mainTitle').onclick=window.editTitle;
-
-window.editSecTitle = function(si){
-  const span=document.getElementById('sec-title-'+si);
-  if(!span) return;
-  const inp=document.createElement('input');
-  inp.className='sec-title-inp';
-  inp.value=state.sections[si].title;
-  span.replaceWith(inp);
-  inp.focus(); inp.select();
-  function commit(){
-    state.sections[si].title=inp.value.trim()||state.sections[si].title;
-    save(); render();
-  }
-  inp.addEventListener('blur',commit);
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+// ── NAVIGATION ──
+window.goHome = function(){
+  currentListId = null;
+  document.getElementById('homeView').classList.add('active');
+  document.getElementById('checklistView').classList.remove('active');
+  document.getElementById('backBtn').style.display='none';
+  document.getElementById('topbarTitle').textContent='Mijn Checklists';
+  renderHome();
 };
 
-window.addSection = function(){
-  state.sections.push({title:"Nieuwe categorie",items:[]});
-  save(); render();
-  setTimeout(()=>window.editSecTitle(state.sections.length-1),30);
+function openList(id){
+  currentListId = id;
+  document.getElementById('homeView').classList.remove('active');
+  document.getElementById('checklistView').classList.add('active');
+  document.getElementById('backBtn').style.display='inline-block';
+  renderChecklist();
+}
+
+// ── TABS ──
+window.switchTab = function(tab){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active', ['lists','templates'][i]===tab));
+  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
 };
 
-window.deleteSection = function(si){
-  if(!confirm(`Categorie "${state.sections[si].title}" verwijderen?`)) return;
-  state.sections.splice(si,1);
-  const newChecked={};
-  Object.keys(state.checked||{}).forEach(k=>{
-    const parts=k.split('-'); const kidx=parseInt(parts[0]);
-    if(kidx<si) newChecked[k]=state.checked[k];
-    else if(kidx>si) newChecked[(kidx-1)+'-'+parts.slice(1).join('-')]=state.checked[k];
+// ── HOME RENDER ──
+function renderHome(){
+  document.getElementById('topbarTitle').textContent='Mijn Checklists';
+  renderGrid('listsGrid', Object.values(appData.lists||{}), false);
+  renderGrid('templatesGrid', Object.values(appData.templates||{}), true);
+}
+
+function renderGrid(gridId, items, isTemplate){
+  const grid = document.getElementById(gridId);
+  grid.innerHTML='';
+
+  items.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
+
+  items.forEach(item=>{
+    const card = document.createElement('div');
+    card.className='list-card';
+    let prog='';
+    if(!isTemplate){
+      const secs = item.sections||[];
+      const total = secs.reduce((s,sec)=>s+(sec.items||[]).length,0);
+      const done = Object.values(item.checked||{}).filter(Boolean).length;
+      const pct = total?Math.round(done/total*100):0;
+      prog=`<div class="meta">${done}/${total} ingepakt</div><div class="prog"><div class="prog-fill" style="width:${pct}%"></div></div>`;
+    }
+    card.innerHTML=`
+      ${isTemplate?'<div class="template-badge">TEMPLATE</div>':''}
+      <h3>${item.title||'Naamloos'}</h3>
+      ${prog}
+      <button class="card-del" title="Verwijderen">✕</button>
+    `;
+    card.onclick=()=>openList(item.id);
+    card.querySelector('.card-del').onclick=(e)=>{
+      e.stopPropagation();
+      if(!confirm(`"${item.title}" verwijderen?`)) return;
+      if(isTemplate) delete appData.templates[item.id];
+      else delete appData.lists[item.id];
+      saveAll(); renderHome();
+    };
+    grid.appendChild(card);
   });
-  state.checked=newChecked;
-  save(); render();
-};
 
-window.toggleItem = function(si, ii){
-  if(!state.checked) state.checked={};
-  const k=`${si}-${ii}`;
-  state.checked[k]=!state.checked[k];
-  render(); save();
-};
+  // New card
+  const newCard = document.createElement('div');
+  newCard.className='new-card';
+  newCard.innerHTML=`<span>+</span><p>${isTemplate?'Nieuwe template':'Nieuwe checklist'}</p>`;
+  newCard.onclick=()=> isTemplate ? createBlankTemplate() : openNewListModal();
+  grid.appendChild(newCard);
+}
 
-window.addItem = function(si, input){
-  const v=input.value.trim();
-  if(!v) return;
-  state.sections[si].items.push(v);
-  input.value='';
-  save(); render();
-  setTimeout(()=>{ const ins=document.querySelectorAll('.add-inp'); if(ins[si]) ins[si].focus(); },20);
-};
+// ── NEW LIST MODAL ──
+function openNewListModal(){
+  // Build template options
+  const opts = document.getElementById('templateOptions');
+  opts.innerHTML='';
+  const blank = document.createElement('button');
+  blank.className='template-opt blank selected';
+  blank.dataset.tpl='blank';
+  blank.textContent='Lege lijst';
+  blank.onclick=()=>selectTpl('blank');
+  opts.appendChild(blank);
 
-window.delItem = function(si, ii){
-  state.sections[si].items.splice(ii,1);
-  const newChecked={};
-  Object.keys(state.checked||{}).forEach(k=>{
-    const parts=k.split('-');
-    if(parseInt(parts[0])!==si){ newChecked[k]=state.checked[k]; return; }
-    const idx=parseInt(parts[1]);
-    if(idx<ii) newChecked[k]=state.checked[k];
-    else if(idx>ii) newChecked[`${si}-${idx-1}`]=state.checked[k];
+  Object.values(appData.templates||{}).forEach(tpl=>{
+    const btn = document.createElement('button');
+    btn.className='template-opt';
+    btn.dataset.tpl=tpl.id;
+    btn.textContent=tpl.title;
+    btn.onclick=()=>selectTpl(tpl.id);
+    opts.appendChild(btn);
   });
-  state.checked=newChecked;
-  save(); render();
+
+  document.getElementById('newListName').value='';
+  document.getElementById('newListModal').classList.add('open');
+  setTimeout(()=>document.getElementById('newListName').focus(),100);
+}
+
+function selectTpl(id){
+  document.querySelectorAll('.template-opt').forEach(b=>b.classList.toggle('selected', b.dataset.tpl===id));
+}
+
+window.closeModal = function(id){ document.getElementById(id).classList.remove('open'); };
+
+window.createList = function(){
+  const name = document.getElementById('newListName').value.trim();
+  if(!name){ document.getElementById('newListName').focus(); return; }
+  const selected = document.querySelector('.template-opt.selected');
+  const tplId = selected ? selected.dataset.tpl : 'blank';
+  const tpl = tplId !== 'blank' ? appData.templates[tplId] : null;
+  const id = 'list_' + Date.now();
+  appData.lists[id] = {
+    id, title: name,
+    sections: tpl ? JSON.parse(JSON.stringify(tpl.sections)) : [],
+    checked: {},
+    createdAt: Date.now()
+  };
+  closeModal('newListModal');
+  saveAll();
+  openList(id);
 };
 
-window.resetChecked = function(){
-  if(!confirm('Alle vinkjes resetten voor iedereen?')) return;
-  state.checked={};
-  save(); render();
+function createBlankTemplate(){
+  const id = 'tpl_' + Date.now();
+  appData.templates[id] = { id, title:'Nieuwe template', sections:[], createdAt:Date.now() };
+  saveAll();
+  openList(id);
+  setTimeout(()=>editClTitle(),200);
+}
+
+// ── SAVE AS TEMPLATE ──
+window.saveAsTemplate = function(){
+  const cur = currentData();
+  document.getElementById('templateName').value = cur.title + ' (template)';
+  document.getElementById('saveTemplateModal').classList.add('open');
+  setTimeout(()=>document.getElementById('templateName').focus(),100);
 };
 
-function render(){
-  const titleEl=document.getElementById('mainTitle');
-  if(titleEl) titleEl.textContent=state.mainTitle;
+window.confirmSaveTemplate = function(){
+  const name = document.getElementById('templateName').value.trim();
+  if(!name) return;
+  const cur = currentData();
+  const id = 'tpl_' + Date.now();
+  appData.templates[id] = {
+    id, title: name,
+    sections: JSON.parse(JSON.stringify(cur.sections||[])),
+    createdAt: Date.now()
+  };
+  closeModal('saveTemplateModal');
+  saveAll();
+  showStatus('Opgeslagen als template!', 3000);
+};
 
-  const grid=document.getElementById('grid');
+// ── CURRENT DATA HELPERS ──
+function currentData(){
+  return appData.lists[currentListId] || appData.templates[currentListId] || {};
+}
+function isTemplate(){ return !!appData.templates[currentListId]; }
+function updateCurrent(fn){
+  const store = isTemplate() ? appData.templates : appData.lists;
+  fn(store[currentListId]);
+  saveAll();
+}
+
+// ── CHECKLIST RENDER ──
+function renderChecklist(){
+  const data = currentData();
+  document.getElementById('topbarTitle').textContent = data.title||'';
+
+  const titleEl = document.getElementById('clTitle');
+  if(titleEl) titleEl.textContent = data.title||'';
+  document.getElementById('clSub').textContent = isTemplate() ? 'Template — bewerkingen worden opgeslagen' : 'Klik om af te vinken · Enter om toe te voegen';
+
+  const grid = document.getElementById('grid');
   grid.innerHTML='';
   let total=0, done=0;
 
-  (state.sections||[]).forEach((sec,si)=>{
+  (data.sections||[]).forEach((sec,si)=>{
     let secDone=0;
     const div=document.createElement('div'); div.className='section';
     const head=document.createElement('div'); head.className='sec-head';
+
     const titleSpan=document.createElement('span');
     titleSpan.className='sec-title'; titleSpan.id='sec-title-'+si;
     titleSpan.textContent=sec.title; titleSpan.title='Klik om te bewerken';
-    titleSpan.onclick=()=>window.editSecTitle(si);
+    titleSpan.onclick=()=>editSecTitle(si);
+
     const cnt=document.createElement('span'); cnt.className='sec-count';
     const delBtn=document.createElement('button'); delBtn.className='del-sec';
     delBtn.textContent='✕'; delBtn.title='Verwijderen';
-    delBtn.onclick=(e)=>{ e.stopPropagation(); window.deleteSection(si); };
+    delBtn.onclick=(e)=>{ e.stopPropagation(); deleteSection(si); };
     head.appendChild(titleSpan); head.appendChild(cnt); head.appendChild(delBtn);
 
     const itemsDiv=document.createElement('div'); itemsDiv.className='items';
     (sec.items||[]).forEach((item,ii)=>{
       const k=`${si}-${ii}`;
-      const checked=!!(state.checked&&state.checked[k]);
+      const checked=!!(data.checked&&data.checked[k]);
       if(checked) secDone++;
       total++; if(checked) done++;
+
       const row=document.createElement('div'); row.className='item'+(checked?' done':'');
+
       const box=document.createElement('div'); box.className='box';
       if(checked) box.textContent='✓';
-      const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent=item;
+      box.onclick=()=>toggleItem(si,ii);
+
+      const lbl=document.createElement('span'); lbl.className='lbl';
+      lbl.textContent=item; lbl.title='Klik om te bewerken';
+      lbl.onclick=()=>editItemLabel(si,ii,lbl);
+
       const del=document.createElement('button'); del.className='del-item'; del.textContent='✕';
-      del.onclick=(e)=>{ e.stopPropagation(); window.delItem(si,ii); };
-      row.onclick=()=>window.toggleItem(si,ii);
+      del.onclick=(e)=>{ e.stopPropagation(); delItem(si,ii); };
+
       row.appendChild(box); row.appendChild(lbl); row.appendChild(del);
       itemsDiv.appendChild(row);
     });
+
     cnt.textContent=`${secDone}/${sec.items.length}`;
 
     const addRow=document.createElement('div'); addRow.className='add-row';
     addRow.innerHTML='<div class="add-box">+</div><input class="add-inp" placeholder="Toevoegen…">';
     const inp=addRow.querySelector('.add-inp');
-    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') window.addItem(si,inp); });
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') addItem(si,inp); });
     itemsDiv.appendChild(addRow);
 
     div.appendChild(head); div.appendChild(itemsDiv);
@@ -323,6 +505,110 @@ function render(){
   document.getElementById('pb').style.width=pct+'%';
   document.getElementById('pl').textContent=`${done} van ${total} ingepakt (${pct}%)`;
 }
+
+// ── EDIT HANDLERS ──
+window.editClTitle = function(){
+  const el=document.getElementById('clTitle');
+  const inp=document.createElement('input');
+  inp.className='checklist-title-inp';
+  inp.value=currentData().title||'';
+  el.replaceWith(inp); inp.focus(); inp.select();
+  function commit(){
+    const v=inp.value.trim();
+    if(v) updateCurrent(d=>d.title=v);
+    renderChecklist();
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+};
+
+function editSecTitle(si){
+  const span=document.getElementById('sec-title-'+si);
+  if(!span) return;
+  const inp=document.createElement('input'); inp.className='sec-title-inp';
+  inp.value=currentData().sections[si].title;
+  span.replaceWith(inp); inp.focus(); inp.select();
+  function commit(){
+    const v=inp.value.trim();
+    if(v) updateCurrent(d=>d.sections[si].title=v);
+    renderChecklist();
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+}
+
+function editItemLabel(si, ii, lbl){
+  const inp=document.createElement('input'); inp.className='lbl-inp';
+  inp.value=currentData().sections[si].items[ii];
+  lbl.replaceWith(inp); inp.focus(); inp.select();
+  function commit(){
+    const v=inp.value.trim();
+    if(v) updateCurrent(d=>d.sections[si].items[ii]=v);
+    renderChecklist();
+  }
+  inp.addEventListener('blur',commit);
+  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+}
+
+// ── CRUD ──
+window.addSection = function(){
+  updateCurrent(d=>{ if(!d.sections) d.sections=[]; d.sections.push({title:'Nieuwe categorie',items:[]}); });
+  renderChecklist();
+  setTimeout(()=>editSecTitle((currentData().sections||[]).length-1),30);
+};
+
+function deleteSection(si){
+  if(!confirm(`Categorie verwijderen?`)) return;
+  updateCurrent(d=>{
+    d.sections.splice(si,1);
+    const nc={};
+    Object.keys(d.checked||{}).forEach(k=>{
+      const p=k.split('-'); const ki=parseInt(p[0]);
+      if(ki<si) nc[k]=d.checked[k];
+      else if(ki>si) nc[(ki-1)+'-'+p.slice(1).join('-')]=d.checked[k];
+    });
+    d.checked=nc;
+  });
+  renderChecklist();
+}
+
+function addItem(si, input){
+  const v=input.value.trim(); if(!v) return;
+  updateCurrent(d=>d.sections[si].items.push(v));
+  input.value='';
+  renderChecklist();
+  setTimeout(()=>{ const ins=document.querySelectorAll('.add-inp'); if(ins[si]) ins[si].focus(); },20);
+}
+
+function delItem(si,ii){
+  updateCurrent(d=>{
+    d.sections[si].items.splice(ii,1);
+    const nc={};
+    Object.keys(d.checked||{}).forEach(k=>{
+      const p=k.split('-');
+      if(parseInt(p[0])!==si){ nc[k]=d.checked[k]; return; }
+      const idx=parseInt(p[1]);
+      if(idx<ii) nc[k]=d.checked[k];
+      else if(idx>ii) nc[`${si}-${idx-1}`]=d.checked[k];
+    });
+    d.checked=nc;
+  });
+  renderChecklist();
+}
+
+function toggleItem(si,ii){
+  updateCurrent(d=>{
+    if(!d.checked) d.checked={};
+    d.checked[`${si}-${ii}`]=!d.checked[`${si}-${ii}`];
+  });
+  renderChecklist();
+}
+
+window.resetChecked = function(){
+  if(!confirm('Alle vinkjes resetten?')) return;
+  updateCurrent(d=>d.checked={});
+  renderChecklist();
+};
 </script>
 </body>
 </html>
