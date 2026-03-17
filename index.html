@@ -531,11 +531,14 @@ function renderHome(){
     card.querySelector('.list-card-body').onclick=()=>openList(item.id,true,false);
     tg.appendChild(card);
   });
-  Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
+  const alreadyCopied=new Set(Object.values(userData.templates||{}).map(t=>t.copiedFrom).filter(Boolean));
+  Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email&&!alreadyCopied.has(t.id)).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
     const card=document.createElement('div'); card.className='list-card';
     card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span><span class="badge badge-owner">VAN ${item.owner||'ander'}</span></div>
-      <div class="list-card-body"><h3>${item.title||'Naamloos'}</h3><div class="meta">${(item.sections||[]).length} categorieën · Gedeeld</div></div>`;
-    card.querySelector('.list-card-body').onclick=()=>{const id='tpl_'+Date.now();userData.templates[id]={...JSON.parse(JSON.stringify(item)),id,createdAt:Date.now(),owner:currentUser.email};saveUserData();openList(id,true,false);};
+      <div class="list-card-body"><h3>${item.title||'Naamloos'}</h3><div class="meta">${(item.sections||[]).length} categorieën · Gedeeld</div></div>
+      <div class="card-actions">
+        <button class="card-action-btn" onclick="event.stopPropagation();copySharedTemplate('${item.id}')">📋 Kopieer naar mijn templates</button>
+      </div>`;
     tg.appendChild(card);
   });
   const nt=document.createElement('div'); nt.className='new-card'; nt.innerHTML='<span>+</span><p>Nieuwe template</p>'; nt.onclick=createBlankTemplate; tg.appendChild(nt);
@@ -604,7 +607,8 @@ window.unarchiveList=function(id){
 function openNewListModal(){
   const opts=document.getElementById('templateOptions'); opts.innerHTML='';
   const blank=document.createElement('button'); blank.className='template-opt blank selected'; blank.dataset.tpl='blank'; blank.textContent='Lege lijst'; blank.onclick=()=>selectTpl('blank'); opts.appendChild(blank);
-  [...Object.values(userData.templates||{}),...Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email)].forEach(tpl=>{
+  const copiedIds=new Set(Object.values(userData.templates||{}).map(t=>t.copiedFrom).filter(Boolean));
+  [...Object.values(userData.templates||{}),...Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email&&!copiedIds.has(t.id))].forEach(tpl=>{
     const btn=document.createElement('button'); btn.className='template-opt'; btn.dataset.tpl=tpl.id; btn.textContent=tpl.title; btn.onclick=()=>selectTpl(tpl.id); opts.appendChild(btn);
   });
   document.getElementById('newListName').value='';
@@ -616,6 +620,14 @@ function openNewListModal(){
 
 function selectTpl(id){ document.querySelectorAll('.template-opt').forEach(b=>b.classList.toggle('selected',b.dataset.tpl===id)); }
 window.closeModal=function(id){ document.getElementById(id).classList.remove('open'); };
+
+window.copySharedTemplate=function(id){
+  const item=sharedTemplates[id]; if(!item) return;
+  const newId='tpl_'+Date.now();
+  userData.templates[newId]={...JSON.parse(JSON.stringify(item)),id:newId,createdAt:Date.now(),owner:currentUser.email,copiedFrom:id};
+  saveUserData(); renderHome();
+  showStatus('Template gekopieerd naar jouw templates!',2500);
+};
 
 window.createList=function(){
   const name=document.getElementById('newListName').value.trim(); if(!name){document.getElementById('newListName').focus();return;}
