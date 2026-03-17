@@ -622,7 +622,7 @@ window.createList=function(){
   const sel=document.querySelector('.template-opt.selected'), tplId=sel?sel.dataset.tpl:'blank';
   const tpl=tplId!=='blank'?(userData.templates[tplId]||sharedTemplates[tplId]):null;
   const id='list_'+Date.now();
-  userData.lists[id]={id,title:name,sections:tpl?JSON.parse(JSON.stringify(tpl.sections)):[],checked:{},createdAt:Date.now(),
+  userData.lists[id]={id,title:name,sections:tpl?JSON.parse(JSON.stringify(tpl.sections)):[],notes:tpl&&tpl.notes?JSON.parse(JSON.stringify(tpl.notes)):{},checked:{},createdAt:Date.now(),
     tripDate:document.getElementById('newListDate').value||null,
     tripDest:document.getElementById('newListDest').value.trim()||null};
   closeModal('newListModal'); saveUserData(); openList(id,false,false);
