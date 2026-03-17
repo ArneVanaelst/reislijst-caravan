@@ -7,63 +7,85 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f6ff;min-height:100vh}
-#loginView{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-.login-card{background:white;border-radius:20px;box-shadow:0 4px 24px rgba(21,101,192,0.12);padding:36px 32px;width:100%;max-width:380px}
-.login-card h1{font-size:1.4rem;font-weight:700;color:#1565C0;text-align:center;margin-bottom:4px}
-.login-card p{font-size:0.8rem;color:#7a9cc4;text-align:center;margin-bottom:28px}
-.login-card label{font-size:0.75rem;font-weight:600;color:#5a87c0;display:block;margin-bottom:4px;margin-top:14px}
+
+/* LOGIN */
+#loginView{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;flex-direction:column;gap:20px}
+.login-logo{display:flex;align-items:center;gap:12px}
+.login-logo svg{width:160px;height:auto}
+.login-logo-text{font-size:1.4rem;font-weight:800;color:#1565C0;letter-spacing:-0.5px}
+.login-card{background:white;border-radius:20px;box-shadow:0 4px 24px rgba(21,101,192,0.12);padding:32px;width:100%;max-width:360px}
+.login-card p{font-size:0.8rem;color:#7a9cc4;text-align:center;margin-bottom:24px}
+.login-card label{font-size:0.75rem;font-weight:600;color:#5a87c0;display:block;margin-bottom:4px;margin-top:12px}
 .login-card input{width:100%;border:1.5px solid #BBDEFB;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:0.88rem;outline:none;color:#1e2d3d}
 .login-card input:focus{border-color:#1565C0}
-.login-btn{width:100%;margin-top:20px;background:#1565C0;color:white;border:none;border-radius:10px;padding:11px;font-family:inherit;font-size:0.9rem;font-weight:700;cursor:pointer}
+.login-btn{width:100%;margin-top:18px;background:#1565C0;color:white;border:none;border-radius:10px;padding:11px;font-family:inherit;font-size:0.9rem;font-weight:700;cursor:pointer}
 .login-btn:hover{background:#0d47a1}
 .login-err{font-size:0.75rem;color:#e53935;text-align:center;margin-top:10px;min-height:18px}
-.login-switch{font-size:0.78rem;color:#7a9cc4;text-align:center;margin-top:16px;cursor:pointer}
+.login-switch{font-size:0.78rem;color:#7a9cc4;text-align:center;margin-top:14px;cursor:pointer}
 .login-switch span{color:#1565C0;font-weight:600}
 .login-forgot{font-size:0.72rem;color:#90CAF9;text-align:center;margin-top:8px;cursor:pointer}
 .login-forgot:hover{color:#1565C0}
-.topbar{background:#1565C0;color:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
+
+/* TOPBAR */
+.topbar{background:#1565C0;color:white;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
 .topbar-left{display:flex;align-items:center;gap:10px}
 .back-btn{background:rgba(255,255,255,0.15);border:none;color:white;border-radius:8px;padding:5px 10px;cursor:pointer;font-family:inherit;font-size:0.8rem;display:none}
 .back-btn:hover{background:rgba(255,255,255,0.25)}
-.topbar h1{font-size:1rem;font-weight:700;color:white}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.user-lbl{font-size:0.72rem;color:rgba(255,255,255,0.8)}
+.topbar-logo{display:flex;align-items:center;gap:8px}
+.topbar-logo svg{width:44px;height:auto}
+.topbar h1{font-size:0.95rem;font-weight:700;color:white}
+.topbar-right{display:flex;align-items:center;gap:8px}
+.user-lbl{font-size:0.7rem;color:rgba(255,255,255,0.75)}
 .logout-btn{background:rgba(255,255,255,0.15);border:none;color:white;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;font-size:0.72rem}
 .logout-btn:hover{background:rgba(255,255,255,0.25)}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite;flex-shrink:0}
 .sync-dot.off{background:#ff9800;animation:none}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* VIEWS */
 .view{display:none;padding:20px}
 .view.active{display:block}
+
+/* HOME */
 .home-tabs{display:flex;max-width:900px;margin:0 auto 20px;border-bottom:2px solid #BBDEFB}
-.tab-btn{font-family:inherit;font-size:0.85rem;font-weight:600;padding:8px 20px;border:none;background:transparent;color:#7a9cc4;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab-btn{font-family:inherit;font-size:0.85rem;font-weight:600;padding:8px 18px;border:none;background:transparent;color:#7a9cc4;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
 .tab-btn.active{color:#1565C0;border-bottom-color:#1565C0}
 .tab-content{display:none;max-width:900px;margin:0 auto}
 .tab-content.active{display:block}
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
-.list-card{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.08);padding:16px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;position:relative}
+.list-card{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.08);padding:14px 16px;border:2px solid transparent;transition:border-color 0.15s;position:relative}
 .list-card:hover{border-color:#90CAF9}
-.list-card h3{font-size:0.95rem;font-weight:700;color:#1e2d3d;margin-bottom:6px;padding-right:24px}
-.list-card .meta{font-size:0.75rem;color:#7a9cc4}
-.list-card .prog{height:4px;background:#e3f2fd;border-radius:99px;margin-top:10px;overflow:hidden}
+.list-card-body{cursor:pointer}
+.list-card h3{font-size:0.92rem;font-weight:700;color:#1e2d3d;margin-bottom:4px;padding-right:20px;line-height:1.3}
+.list-card .meta{font-size:0.72rem;color:#7a9cc4;margin-bottom:2px}
+.list-card .trip-date{font-size:0.72rem;color:#1565C0;font-weight:600;margin-bottom:6px}
+.list-card .prog{height:4px;background:#e3f2fd;border-radius:99px;margin-top:8px;overflow:hidden}
 .list-card .prog-fill{height:100%;background:#1565C0;border-radius:99px}
+.card-actions{display:flex;gap:4px;margin-top:10px;border-top:1px solid #f0f6ff;padding-top:8px}
+.card-action-btn{font-family:inherit;font-size:0.68rem;font-weight:600;padding:3px 8px;border-radius:6px;border:1px solid #dce9f8;background:white;color:#5a87c0;cursor:pointer;flex:1;text-align:center}
+.card-action-btn:hover{background:#e3f2fd;color:#1565C0}
+.card-action-btn.danger:hover{background:#ffeaea;color:#e53935;border-color:#ffcdd2}
 .card-del{position:absolute;top:10px;right:10px;background:none;border:none;color:#ccc;cursor:pointer;font-size:0.8rem;padding:2px 5px;border-radius:4px}
 .card-del:hover{color:#e53935;background:#ffeaea}
-.badge{display:inline-block;font-size:0.65rem;font-weight:700;border-radius:99px;padding:1px 8px;margin-bottom:6px;margin-right:3px}
+.badge{display:inline-block;font-size:0.62rem;font-weight:700;border-radius:99px;padding:1px 7px;margin-bottom:5px;margin-right:3px}
 .badge-tpl{background:#e3f2fd;color:#1565C0}
 .badge-shared{background:#e8f5e9;color:#2e7d32}
 .badge-owner{background:#fff3e0;color:#e65100}
+.badge-archive{background:#f3e5f5;color:#7b1fa2}
 .new-card{background:white;border-radius:14px;border:2px dashed #90CAF9;padding:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:100px;transition:all 0.15s}
 .new-card:hover{background:#e3f2fd;border-color:#1565C0}
 .new-card span{font-size:1.5rem;color:#90CAF9}
 .new-card p{font-size:0.8rem;color:#7a9cc4;font-weight:600}
+
+/* MODALS */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
-.modal{background:white;border-radius:16px;padding:24px;width:100%;max-width:440px;box-shadow:0 8px 40px rgba(0,0,0,0.15)}
+.modal{background:white;border-radius:16px;padding:24px;width:100%;max-width:440px;box-shadow:0 8px 40px rgba(0,0,0,0.15);max-height:90vh;overflow-y:auto}
 .modal h2{font-size:1rem;font-weight:700;color:#1e2d3d;margin-bottom:16px}
-.modal label{font-size:0.78rem;color:#5a87c0;font-weight:600;display:block;margin-bottom:4px;margin-top:12px}
-.modal input[type=text],.modal input[type=email]{width:100%;border:1.5px solid #BBDEFB;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:0.88rem;outline:none;color:#1e2d3d}
-.modal input:focus{border-color:#1565C0}
+.modal label{font-size:0.75rem;color:#5a87c0;font-weight:600;display:block;margin-bottom:4px;margin-top:12px}
+.modal input[type=text],.modal input[type=email],.modal input[type=date],.modal textarea{width:100%;border:1.5px solid #BBDEFB;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:0.88rem;outline:none;color:#1e2d3d}
+.modal textarea{resize:vertical;min-height:60px}
+.modal input:focus,.modal textarea:focus{border-color:#1565C0}
 .template-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .template-opt{border:1.5px solid #BBDEFB;border-radius:8px;padding:8px 10px;cursor:pointer;font-family:inherit;font-size:0.78rem;color:#1e2d3d;background:white;text-align:left;font-weight:600;transition:all 0.15s}
 .template-opt:hover{border-color:#1565C0;background:#e3f2fd}
@@ -82,58 +104,124 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .toggle-slider:before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:white;border-radius:50%;transition:0.2s}
 .toggle input:checked+.toggle-slider{background:#1565C0}
 .toggle input:checked+.toggle-slider:before{transform:translateX(16px)}
-.checklist-header{max-width:900px;margin:0 auto 14px;display:flex;flex-direction:column;align-items:center;gap:4px}
-.checklist-title{font-size:1.3rem;font-weight:700;color:#1565C0;cursor:pointer;border-radius:6px;padding:2px 8px}
+
+/* CHECKLIST VIEW */
+.checklist-header{max-width:900px;margin:0 auto 12px;display:flex;flex-direction:column;align-items:center;gap:4px}
+.checklist-title{font-size:1.25rem;font-weight:700;color:#1565C0;cursor:pointer;border-radius:6px;padding:2px 8px}
 .checklist-title:hover{background:#dceeff}
-.checklist-title-inp{font-size:1.3rem;font-weight:700;color:#1565C0;border:2px solid #90CAF9;border-radius:6px;padding:2px 8px;outline:none;font-family:inherit;text-align:center;width:300px}
-.checklist-sub{font-size:0.75rem;color:#7a9cc4}
-.prog-wrap{background:#dce9f8;border-radius:99px;height:7px;max-width:360px;width:100%;overflow:hidden}
+.checklist-title-inp{font-size:1.25rem;font-weight:700;color:#1565C0;border:2px solid #90CAF9;border-radius:6px;padding:2px 8px;outline:none;font-family:inherit;text-align:center;width:300px}
+.checklist-sub{font-size:0.72rem;color:#7a9cc4}
+
+/* TRIP INFO BLOCK */
+.trip-info-bar{max-width:900px;margin:0 auto 12px;background:white;border-radius:12px;border:1.5px solid #BBDEFB;padding:10px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.trip-info-field{display:flex;align-items:center;gap:6px;font-size:0.78rem;color:#5a87c0}
+.trip-info-field span{font-weight:600;color:#1565C0}
+.trip-info-field input{border:none;outline:none;font-family:inherit;font-size:0.78rem;color:#1565C0;font-weight:600;background:transparent;cursor:pointer;width:110px}
+.trip-info-field input:hover{text-decoration:underline}
+.trip-info-field textarea{border:none;outline:none;font-family:inherit;font-size:0.78rem;color:#1565C0;font-weight:600;background:transparent;cursor:pointer;resize:none;width:160px;height:20px;overflow:hidden}
+.trip-info-field textarea:hover{text-decoration:underline}
+
+.prog-wrap{background:#dce9f8;border-radius:99px;height:6px;max-width:360px;width:100%;overflow:hidden}
 .prog-bar{height:100%;background:linear-gradient(90deg,#1565C0,#42A5F5);border-radius:99px;transition:width 0.4s}
-.prog-lbl{font-size:0.72rem;color:#5a87c0}
+.prog-lbl{font-size:0.7rem;color:#5a87c0}
 .cl-toolbar{display:flex;justify-content:flex-end;gap:8px;max-width:900px;margin:0 auto 12px;flex-wrap:wrap}
-.btn{font-family:inherit;font-size:0.75rem;font-weight:600;padding:5px 12px;border-radius:8px;border:1.5px solid #90CAF9;background:white;color:#1565C0;cursor:pointer}
+.btn{font-family:inherit;font-size:0.73rem;font-weight:600;padding:5px 11px;border-radius:8px;border:1.5px solid #90CAF9;background:white;color:#1565C0;cursor:pointer}
 .btn:hover{background:#e3f2fd}
+
+/* GRID & SECTIONS */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;max-width:900px;margin:0 auto}
 .section{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.07);overflow:hidden;transition:opacity 0.15s,transform 0.15s}
-.section.dragging{opacity:0.4;transform:scale(0.98)}
-.section.drag-over{box-shadow:0 0 0 2.5px #1565C0,0 2px 10px rgba(21,101,192,0.07)}
-.sec-head{background:#BBDEFB;padding:8px 10px 6px;display:flex;align-items:center;gap:5px}
-.drag-handle{font-size:13px;color:#90CAF9;cursor:grab;padding:0 4px;flex-shrink:0;user-select:none}
+.section.dragging{opacity:0.35;transform:scale(0.97)}
+.section.drag-over{box-shadow:0 0 0 2.5px #1565C0}
+.sec-head{background:#BBDEFB;padding:7px 10px 5px;display:flex;align-items:center;gap:4px}
+.drag-handle{font-size:13px;color:#90CAF9;cursor:grab;padding:0 3px;flex-shrink:0;user-select:none}
 .drag-handle:active{cursor:grabbing}
-.sec-title{font-size:0.78rem;font-weight:700;color:#0D47A1;cursor:pointer;flex:1;border-radius:3px;padding:1px 3px}
+.sec-title{font-size:0.76rem;font-weight:700;color:#0D47A1;cursor:pointer;flex:1;border-radius:3px;padding:1px 3px}
 .sec-title:hover{background:rgba(255,255,255,0.5)}
-.sec-title-inp{font-size:0.78rem;font-weight:700;color:#0D47A1;border:1.5px solid #1565C0;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;flex:1;min-width:0}
-.sec-count{font-size:0.68rem;background:white;color:#5a8fd4;border-radius:99px;padding:1px 7px;font-weight:600;flex-shrink:0}
-.del-sec{font-size:0.7rem;color:#90CAF9;cursor:pointer;background:none;border:none;padding:1px 4px;border-radius:3px;flex-shrink:0;font-family:inherit}
+.sec-title-inp{font-size:0.76rem;font-weight:700;color:#0D47A1;border:1.5px solid #1565C0;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;flex:1;min-width:0}
+.sec-count{font-size:0.65rem;background:white;color:#5a8fd4;border-radius:99px;padding:1px 6px;font-weight:600;flex-shrink:0}
+.del-sec{font-size:0.68rem;color:#90CAF9;cursor:pointer;background:none;border:none;padding:1px 4px;border-radius:3px;flex-shrink:0;font-family:inherit}
 .del-sec:hover{color:#e53935;background:rgba(255,255,255,0.6)}
-.items{padding:4px 0}
-.item{display:flex;align-items:center;gap:8px;padding:4px 12px;border-radius:4px;margin:1px 4px}
-.item.done{opacity:0.4}
+.items{padding:3px 0}
+
+/* ITEMS WITH DRAG */
+.item{display:flex;align-items:flex-start;gap:6px;padding:3px 10px;border-radius:4px;margin:1px 3px;position:relative}
+.item:hover{background:#f5f9ff}
+.item.done{opacity:0.38}
 .item.done .lbl{text-decoration:line-through}
-.box{width:15px;height:15px;border:1.5px solid #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:white;cursor:pointer;transition:all 0.15s}
+.item.item-dragging{opacity:0.3}
+.item.item-drag-over{border-top:2px solid #1565C0}
+.item-drag-handle{font-size:11px;color:#c5d9f0;cursor:grab;flex-shrink:0;padding-top:3px;user-select:none;opacity:0}
+.item:hover .item-drag-handle{opacity:1}
+.item-drag-handle:active{cursor:grabbing}
+.box{width:14px;height:14px;border:1.5px solid #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;cursor:pointer;transition:all 0.15s;margin-top:3px}
 .item.done .box{background:#1565C0;border-color:#1565C0}
-.lbl{font-size:0.78rem;color:#1e2d3d;flex:1;line-height:1.3;cursor:pointer;border-radius:3px;padding:1px 3px}
+.item-content{flex:1;min-width:0}
+.lbl{font-size:0.76rem;color:#1e2d3d;line-height:1.4;cursor:pointer;border-radius:3px;padding:1px 3px;display:block}
 .lbl:hover{background:#e3f2fd}
-.lbl-inp{font-size:0.78rem;color:#1e2d3d;flex:1;border:1.5px solid #90CAF9;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;min-width:0}
-.del-item{font-size:0.7rem;color:#ccc;opacity:0;padding:1px 3px;border-radius:3px;border:none;background:transparent;cursor:pointer;flex-shrink:0;font-family:inherit}
-.item:hover .del-item{opacity:1}
+.lbl-inp{font-size:0.76rem;color:#1e2d3d;border:1.5px solid #90CAF9;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;width:100%}
+.item-note{font-size:0.68rem;color:#90CAF9;padding:0 3px 1px;cursor:pointer;font-style:italic;display:block}
+.item-note:hover{color:#1565C0}
+.item-note-inp{font-size:0.68rem;color:#5a87c0;border:1px solid #BBDEFB;border-radius:3px;padding:1px 4px;outline:none;font-family:inherit;background:white;width:100%;font-style:italic;margin-top:2px}
+.item-actions{display:flex;gap:2px;flex-shrink:0;padding-top:2px}
+.del-item,.note-btn{font-size:0.65rem;color:#ccc;opacity:0;padding:1px 3px;border-radius:3px;border:none;background:transparent;cursor:pointer;flex-shrink:0;font-family:inherit}
+.item:hover .del-item,.item:hover .note-btn{opacity:1}
 .del-item:hover{color:#e53935;background:#ffeaea}
-.add-row{display:flex;align-items:center;gap:8px;padding:4px 12px 8px;border-top:1px dashed #dce9f8;margin-top:3px}
-.add-box{width:15px;height:15px;border:1.5px dashed #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:#90CAF9;font-weight:700}
-.add-inp{flex:1;border:none;outline:none;font-family:inherit;font-size:0.78rem;color:#1e2d3d;background:transparent}
+.note-btn:hover{color:#1565C0;background:#e3f2fd}
+
+.add-row{display:flex;align-items:center;gap:6px;padding:3px 10px 8px;border-top:1px dashed #dce9f8;margin-top:2px}
+.add-box{width:14px;height:14px;border:1.5px dashed #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;color:#90CAF9;font-weight:700}
+.add-inp{flex:1;border:none;outline:none;font-family:inherit;font-size:0.76rem;color:#1e2d3d;background:transparent}
 .add-inp::placeholder{color:#b0c8e8}
 .add-sec-wrap{max-width:900px;margin:12px auto 0}
-.add-sec-btn{width:100%;font-family:inherit;font-size:0.78rem;color:#1565C0;border:1.5px dashed #90CAF9;background:white;border-radius:14px;padding:10px;cursor:pointer;font-weight:600}
+.add-sec-btn{width:100%;font-family:inherit;font-size:0.76rem;color:#1565C0;border:1.5px dashed #90CAF9;background:white;border-radius:14px;padding:9px;cursor:pointer;font-weight:600}
 .add-sec-btn:hover{background:#e3f2fd}
 .status{font-size:0.7rem;color:#7a9cc4;text-align:center;margin-top:8px;min-height:16px}
-@media print{.topbar,.cl-toolbar,.add-row,.del-item,.del-sec,.add-sec-wrap,.status{display:none!important}}
+
+/* INLINE RENAME ON CARD */
+.card-title-inp{font-size:0.92rem;font-weight:700;color:#1e2d3d;border:1.5px solid #90CAF9;border-radius:6px;padding:2px 6px;outline:none;font-family:inherit;width:100%;margin-bottom:4px}
+
+@media print{.topbar,.cl-toolbar,.add-row,.del-item,.note-btn,.item-drag-handle,.drag-handle,.del-sec,.add-sec-wrap,.status,.card-actions,.trip-info-bar button{display:none!important}}
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="loginView">
+  <div class="login-logo">
+    <svg viewBox="0 0 380 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="30" y="40" width="340" height="140" rx="18" fill="#F5F5F5" stroke="#ddd" stroke-width="1.5"/>
+  <rect x="30" y="40" width="340" height="30" rx="18" fill="#EEEEEE" stroke="#ddd" stroke-width="1"/>
+  <rect x="30" y="56" width="340" height="14" fill="#EEEEEE"/>
+  <rect x="30" y="128" width="340" height="18" fill="#1565C0"/>
+  <rect x="30" y="144" width="340" height="6" fill="#42A5F5"/>
+  <rect x="50" y="58" width="110" height="56" rx="5" fill="#BBDEFB" stroke="#90CAF9" stroke-width="1.5"/>
+  <line x1="105" y1="58" x2="105" y2="114" stroke="#90CAF9" stroke-width="1"/>
+  <line x1="50" y1="86" x2="160" y2="86" stroke="#90CAF9" stroke-width="1"/>
+  <rect x="178" y="62" width="60" height="44" rx="4" fill="#BBDEFB" stroke="#90CAF9" stroke-width="1.5"/>
+  <line x1="208" y1="62" x2="208" y2="106" stroke="#90CAF9" stroke-width="1"/>
+  <rect x="308" y="56" width="52" height="124" rx="5" fill="#E8E8E8" stroke="#ccc" stroke-width="1.5"/>
+  <rect x="314" y="68" width="18" height="62" rx="3" fill="#FAFAFA" stroke="#ddd" stroke-width="1"/>
+  <circle cx="322" cy="116" r="4" fill="#aaa"/>
+  <line x1="308" y1="90" x2="360" y2="90" stroke="#ccc" stroke-width="1"/>
+  <rect x="14" y="154" width="18" height="6" rx="2" fill="#bbb"/>
+  <rect x="8" y="149" width="10" height="16" rx="3" fill="#bbb"/>
+  <line x1="70" y1="180" x2="64" y2="200" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+  <line x1="320" y1="180" x2="326" y2="200" stroke="#ccc" stroke-width="2" stroke-linecap="round"/>
+  <rect x="150" y="162" width="80" height="22" rx="5" fill="#E0E0E0"/>
+  <circle cx="190" cy="194" r="24" fill="#424242"/>
+  <circle cx="190" cy="194" r="15" fill="#616161"/>
+  <circle cx="190" cy="194" r="6" fill="#9E9E9E"/>
+  <line x1="190" y1="179" x2="190" y2="170" stroke="#9E9E9E" stroke-width="1.5"/>
+  <line x1="190" y1="209" x2="190" y2="218" stroke="#9E9E9E" stroke-width="1.5"/>
+  <line x1="175" y1="194" x2="166" y2="194" stroke="#9E9E9E" stroke-width="1.5"/>
+  <line x1="205" y1="194" x2="214" y2="194" stroke="#9E9E9E" stroke-width="1.5"/>
+  <circle cx="352" cy="42" r="26" fill="#4CAF50"/>
+  <path d="M340 42l7 8 13-15" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+    <span class="login-logo-text">Mijn Checklists</span>
+  </div>
   <div class="login-card">
-    <h1>🚐 Mijn Checklists</h1>
     <p id="loginSubtitle">Inloggen met je account</p>
     <label>E-mailadres</label>
     <input type="email" id="loginEmail" placeholder="jouw@email.com" autocomplete="email">
@@ -143,17 +231,38 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <label>Wachtwoord bevestigen</label>
       <input type="password" id="loginPasswordConfirm" placeholder="••••••••">
     </div>
-    <button class="login-btn" id="loginBtn" onclick="handleAuth()">Inloggen</button>
+    <button class="login-btn" onclick="handleAuth()">Inloggen</button>
     <div class="login-err" id="loginErr"></div>
     <div class="login-switch" id="loginSwitch" onclick="toggleAuthMode()">Nog geen account? <span>Registreer hier</span></div>
     <div class="login-forgot" id="loginForgot" onclick="resetPassword()">Wachtwoord vergeten?</div>
   </div>
 </div>
 
+<!-- APP -->
 <div id="appView" style="display:none">
   <div class="topbar">
     <div class="topbar-left">
       <button class="back-btn" id="backBtn" onclick="goHome()">← Terug</button>
+      <div class="topbar-logo">
+        <svg viewBox="0 0 150 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="10" width="140" height="58" rx="9" fill="white" fill-opacity="0.9"/>
+  <rect x="0" y="10" width="140" height="14" rx="9" fill="white" fill-opacity="0.7"/>
+  <rect x="0" y="18" width="140" height="6" fill="white" fill-opacity="0.7"/>
+  <rect x="0" y="50" width="140" height="8" fill="#BBDEFB"/>
+  <rect x="0" y="57" width="140" height="3" fill="#90CAF9"/>
+  <rect x="10" y="18" width="40" height="26" rx="3" fill="#1565C0" fill-opacity="0.5"/>
+  <line x1="30" y1="18" x2="30" y2="44" stroke="#1565C0" stroke-width="0.8" stroke-opacity="0.4"/>
+  <rect x="58" y="20" width="26" height="22" rx="3" fill="#1565C0" fill-opacity="0.5"/>
+  <rect x="100" y="16" width="30" height="52" rx="3" fill="white" fill-opacity="0.6"/>
+  <line x1="100" y1="36" x2="130" y2="36" stroke="white" stroke-width="0.8" stroke-opacity="0.5"/>
+  <rect x="42" y="68" width="36" height="10" rx="3" fill="white" fill-opacity="0.5"/>
+  <circle cx="60" cy="82" r="14" fill="white" fill-opacity="0.8"/>
+  <circle cx="60" cy="82" r="9" fill="white" fill-opacity="0.5"/>
+  <circle cx="60" cy="82" r="3.5" fill="white" fill-opacity="0.9"/>
+  <circle cx="128" cy="12" r="14" fill="#4CAF50"/>
+  <path d="M121 12l4 5 8-9" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+      </div>
       <h1 id="topbarTitle">Mijn Checklists</h1>
     </div>
     <div class="topbar-right">
@@ -163,15 +272,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     </div>
   </div>
 
+  <!-- HOME -->
   <div class="view active" id="homeView">
     <div class="home-tabs">
       <button class="tab-btn active" onclick="switchTab('lists')">📋 Mijn lijsten</button>
       <button class="tab-btn" onclick="switchTab('templates')">📁 Templates</button>
+      <button class="tab-btn" onclick="switchTab('archive')">📦 Archief</button>
     </div>
     <div class="tab-content active" id="tab-lists"><div class="card-grid" id="listsGrid"></div></div>
     <div class="tab-content" id="tab-templates"><div class="card-grid" id="templatesGrid"></div></div>
+    <div class="tab-content" id="tab-archive"><div class="card-grid" id="archiveGrid"></div></div>
   </div>
 
+  <!-- CHECKLIST VIEW -->
   <div class="view" id="checklistView">
     <div class="checklist-header">
       <div class="checklist-title" id="clTitle" onclick="editClTitle()">Laden...</div>
@@ -179,9 +292,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
       <div class="prog-lbl" id="pl"></div>
     </div>
+    <div class="trip-info-bar" id="tripInfoBar"></div>
     <div class="cl-toolbar">
-      <button class="btn" onclick="saveAsTemplate()">💾 Opslaan als template</button>
-      <button class="btn" onclick="resetChecked()">↺ Vinkjes resetten</button>
+      <button class="btn" onclick="saveAsTemplate()">💾 Als template</button>
+      <button class="btn" onclick="duplicateList()">⧉ Dupliceren</button>
+      <button class="btn" onclick="archiveList()" id="archiveBtn">📦 Archiveren</button>
+      <button class="btn" onclick="resetChecked()">↺ Resetten</button>
       <button class="btn" onclick="window.print()">🖨 Afdrukken</button>
     </div>
     <div class="grid" id="grid"></div>
@@ -190,11 +306,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<!-- MODALS -->
 <div class="modal-overlay" id="newListModal">
   <div class="modal">
     <h2>Nieuwe checklist</h2>
     <label>Naam</label>
     <input type="text" id="newListName" placeholder="bijv. Camping Frankrijk">
+    <label>Vertrekdatum (optioneel)</label>
+    <input type="date" id="newListDate">
+    <label>Bestemming (optioneel)</label>
+    <input type="text" id="newListDest" placeholder="bijv. Toscane, Italië">
     <label>Startpunt</label>
     <div class="template-options" id="templateOptions"></div>
     <div class="modal-btns">
@@ -219,6 +340,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="modal-btns">
       <button onclick="closeModal('saveTemplateModal')">Annuleren</button>
       <button class="primary" onclick="confirmSaveTemplate()">Opslaan</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="noteModal">
+  <div class="modal">
+    <h2>Notitie</h2>
+    <label>Notitie bij dit item</label>
+    <textarea id="noteText" placeholder="bijv. Beide tubes niet vergeten…" rows="3"></textarea>
+    <div class="modal-btns">
+      <button onclick="closeModal('noteModal')">Annuleren</button>
+      <button class="primary" onclick="saveNote()">Opslaan</button>
     </div>
   </div>
 </div>
@@ -257,10 +390,12 @@ const db = getDatabase(fbApp);
 const auth = getAuth(fbApp);
 
 let currentUser=null, currentListId=null, currentListIsTemplate=false;
-let userData={lists:{},templates:{}}, sharedTemplates={};
+let userData={lists:{},templates:{},archive:{}}, sharedTemplates={};
 let userDataRef=null, sharedRef=null, ignoreNext=false;
 let authMode='login';
+let pendingNoteKey=null; // {si, ii}
 
+// ── AUTH ──
 onAuthStateChanged(auth, user => {
   if(user){
     if(!ALLOWED_EMAILS.includes(user.email)){ showLoginErr("Dit e-mailadres heeft geen toegang."); signOut(auth); return; }
@@ -282,7 +417,7 @@ window.toggleAuthMode=function(){
   authMode=authMode==='login'?'register':'login';
   const r=authMode==='register';
   document.getElementById('loginSubtitle').textContent=r?'Maak je account aan':'Inloggen met je account';
-  document.getElementById('loginBtn').textContent=r?'Account aanmaken':'Inloggen';
+  document.getElementById('loginBtn'||document.querySelector('.login-btn')).textContent=r?'Account aanmaken':'Inloggen';
   document.getElementById('loginSwitch').innerHTML=r?'Al een account? <span>Inloggen</span>':'Nog geen account? <span>Registreer hier</span>';
   document.getElementById('loginPasswordConfirmWrap').style.display=r?'block':'none';
   document.getElementById('loginForgot').style.display=r?'none':'block';
@@ -298,28 +433,23 @@ window.handleAuth=async function(){
     const c=document.getElementById('loginPasswordConfirm').value;
     if(pass!==c){ showLoginErr("Wachtwoorden komen niet overeen."); return; }
     if(pass.length<6){ showLoginErr("Wachtwoord moet minstens 6 tekens zijn."); return; }
-    try{ await createUserWithEmailAndPassword(auth,email,pass); }
-    catch(e){ showLoginErr(friendlyError(e.code)); }
+    try{ await createUserWithEmailAndPassword(auth,email,pass); } catch(e){ showLoginErr(friendlyError(e.code)); }
   } else {
-    try{ await signInWithEmailAndPassword(auth,email,pass); }
-    catch(e){ showLoginErr(friendlyError(e.code)); }
+    try{ await signInWithEmailAndPassword(auth,email,pass); } catch(e){ showLoginErr(friendlyError(e.code)); }
   }
 };
 
 window.resetPassword=async function(){
   const email=document.getElementById('loginEmail').value.trim();
   if(!email){ showLoginErr("Vul eerst je e-mailadres in."); return; }
-  try{ await sendPasswordResetEmail(auth,email); showLoginErr("Reset-e-mail verstuurd!"); }
-  catch(e){ showLoginErr(friendlyError(e.code)); }
+  try{ await sendPasswordResetEmail(auth,email); showLoginErr("Reset-e-mail verstuurd!"); } catch(e){ showLoginErr(friendlyError(e.code)); }
 };
 
 window.doLogout=function(){ signOut(auth); };
-
 function showLoginErr(m){ document.getElementById('loginErr').textContent=m; }
-function friendlyError(c){
-  return({'auth/user-not-found':'Geen account gevonden.','auth/wrong-password':'Fout wachtwoord.','auth/invalid-credential':'Fout e-mailadres of wachtwoord.','auth/email-already-in-use':'Account bestaat al.','auth/too-many-requests':'Te veel pogingen, probeer later.','auth/invalid-email':'Ongeldig e-mailadres.'}[c])||'Er is iets misgegaan.';
-}
+function friendlyError(c){ return({'auth/user-not-found':'Geen account gevonden.','auth/wrong-password':'Fout wachtwoord.','auth/invalid-credential':'Fout e-mailadres of wachtwoord.','auth/email-already-in-use':'Account bestaat al.','auth/too-many-requests':'Te veel pogingen, probeer later.','auth/invalid-email':'Ongeldig e-mailadres.'}[c])||'Er is iets misgegaan.'; }
 
+// ── DATA ──
 function subscribeData(){
   const uid=currentUser.uid;
   userDataRef=ref(db,`users/${uid}`);
@@ -327,9 +457,13 @@ function subscribeData(){
   onValue(userDataRef,snap=>{
     if(ignoreNext){ignoreNext=false;return;}
     const val=snap.val();
-    if(val){ userData=val; if(!userData.lists) userData.lists={}; if(!userData.templates) userData.templates={}; }
-    else {
-      userData={lists:{},templates:{}};
+    if(val){
+      userData=val;
+      if(!userData.lists) userData.lists={};
+      if(!userData.templates) userData.templates={};
+      if(!userData.archive) userData.archive={};
+    } else {
+      userData={lists:{},templates:{},archive:{}};
       const tid='tpl_'+Date.now();
       userData.templates[tid]={id:tid,title:"Caravan-checklist Italië",sections:JSON.parse(JSON.stringify(caravanSections)),createdAt:Date.now(),owner:currentUser.email};
       saveUserData();
@@ -346,6 +480,7 @@ async function deleteSharedTemplate(id){ await set(ref(db,`sharedTemplates/${id}
 function setSyncStatus(on){ document.getElementById('dot').className='sync-dot'+(on?'':' off'); }
 function showStatus(msg,ms=2000){ const el=document.getElementById('status'); el.textContent=msg; if(ms) setTimeout(()=>{if(el.textContent===msg)el.textContent='';},ms); }
 
+// ── NAVIGATION ──
 window.goHome=function(){
   currentListId=null; currentListIsTemplate=false;
   document.getElementById('homeView').classList.add('active');
@@ -355,52 +490,119 @@ window.goHome=function(){
   renderHome();
 };
 
-function openList(id,isTemplate){
+function openList(id, isTemplate, isArchive){
   currentListId=id; currentListIsTemplate=!!isTemplate;
   document.getElementById('homeView').classList.remove('active');
   document.getElementById('checklistView').classList.add('active');
   document.getElementById('backBtn').style.display='inline-block';
+  document.getElementById('archiveBtn').style.display=isArchive?'none':'inline-block';
   renderChecklist();
 }
 
 window.switchTab=function(tab){
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['lists','templates'][i]===tab));
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['lists','templates','archive'][i]===tab));
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
 };
 
+// ── HOME RENDER ──
+function formatDate(d){ if(!d) return null; const p=d.split('-'); return `${p[2]}/${p[1]}/${p[0]}`; }
+
 function renderHome(){
   document.getElementById('topbarTitle').textContent='Mijn Checklists';
+
+  // Lists
   const lg=document.getElementById('listsGrid'); lg.innerHTML='';
-  Object.values(userData.lists||{}).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
-    const secs=item.sections||[], total=secs.reduce((s,sec)=>s+(sec.items||[]).length,0);
-    const done=Object.values(item.checked||{}).filter(Boolean).length, pct=total?Math.round(done/total*100):0;
-    const card=document.createElement('div'); card.className='list-card';
-    card.innerHTML=`<h3>${item.title||'Naamloos'}</h3><div class="meta">${done}/${total} ingepakt</div><div class="prog"><div class="prog-fill" style="width:${pct}%"></div></div><button class="card-del">✕</button>`;
-    card.onclick=()=>openList(item.id,false);
-    card.querySelector('.card-del').onclick=(e)=>{e.stopPropagation();if(!confirm(`"${item.title}" verwijderen?`))return;delete userData.lists[item.id];saveUserData();renderHome();};
-    lg.appendChild(card);
+  Object.values(userData.lists||{}).sort((a,b)=>(a.tripDate||'zzz').localeCompare(b.tripDate||'zzz')||(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
+    lg.appendChild(makeListCard(item, false, false));
   });
   const nc=document.createElement('div'); nc.className='new-card'; nc.innerHTML='<span>+</span><p>Nieuwe checklist</p>'; nc.onclick=openNewListModal; lg.appendChild(nc);
 
+  // Templates
   const tg=document.getElementById('templatesGrid'); tg.innerHTML='';
   Object.values(userData.templates||{}).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
     const isShared=!!sharedTemplates[item.id];
     const card=document.createElement('div'); card.className='list-card';
-    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span>${isShared?'<span class="badge badge-shared">GEDEELD</span>':''}</div><h3>${item.title||'Naamloos'}</h3><div class="meta">${(item.sections||[]).length} categorieën</div><button class="card-del">✕</button>`;
-    card.onclick=()=>openList(item.id,true);
-    card.querySelector('.card-del').onclick=(e)=>{e.stopPropagation();if(!confirm(`"${item.title}" verwijderen?`))return;delete userData.templates[item.id];if(isShared)deleteSharedTemplate(item.id);saveUserData();renderHome();};
+    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span>${isShared?'<span class="badge badge-shared">GEDEELD</span>':''}</div>
+      <div class="list-card-body"><h3 id="cth-${item.id}">${item.title||'Naamloos'}</h3>
+      <div class="meta">${(item.sections||[]).length} categorieën</div></div>
+      <div class="card-actions">
+        <button class="card-action-btn" onclick="event.stopPropagation();inlineRename('${item.id}','tpl')">✏️ Hernoemen</button>
+        <button class="card-action-btn danger" onclick="event.stopPropagation();deleteTpl('${item.id}',${isShared})">✕ Verwijderen</button>
+      </div>`;
+    card.querySelector('.list-card-body').onclick=()=>openList(item.id,true,false);
     tg.appendChild(card);
   });
   Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
     const card=document.createElement('div'); card.className='list-card';
-    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span> <span class="badge badge-owner">VAN ${item.owner||'ander'}</span></div><h3>${item.title||'Naamloos'}</h3><div class="meta">${(item.sections||[]).length} categorieën · Gedeeld</div>`;
-    card.onclick=()=>{const id='tpl_'+Date.now();userData.templates[id]={...JSON.parse(JSON.stringify(item)),id,createdAt:Date.now(),owner:currentUser.email};saveUserData();openList(id,true);};
+    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span><span class="badge badge-owner">VAN ${item.owner||'ander'}</span></div>
+      <div class="list-card-body"><h3>${item.title||'Naamloos'}</h3><div class="meta">${(item.sections||[]).length} categorieën · Gedeeld</div></div>`;
+    card.querySelector('.list-card-body').onclick=()=>{const id='tpl_'+Date.now();userData.templates[id]={...JSON.parse(JSON.stringify(item)),id,createdAt:Date.now(),owner:currentUser.email};saveUserData();openList(id,true,false);};
     tg.appendChild(card);
   });
   const nt=document.createElement('div'); nt.className='new-card'; nt.innerHTML='<span>+</span><p>Nieuwe template</p>'; nt.onclick=createBlankTemplate; tg.appendChild(nt);
+
+  // Archive
+  const ag=document.getElementById('archiveGrid'); ag.innerHTML='';
+  const archivedItems=Object.values(userData.archive||{}).sort((a,b)=>(b.archivedAt||0)-(a.archivedAt||0));
+  if(archivedItems.length===0){ ag.innerHTML='<div style="font-size:0.82rem;color:#7a9cc4;padding:20px">Nog geen gearchiveerde lijsten.</div>'; }
+  archivedItems.forEach(item=>{ ag.appendChild(makeListCard(item, false, true)); });
 }
 
+function makeListCard(item, isTemplate, isArchive){
+  const secs=item.sections||[], total=secs.reduce((s,sec)=>s+(sec.items||[]).length,0);
+  const done=Object.values(item.checked||{}).filter(Boolean).length, pct=total?Math.round(done/total*100):0;
+  const dateStr=formatDate(item.tripDate);
+  const card=document.createElement('div'); card.className='list-card';
+  card.innerHTML=`
+    ${isArchive?'<span class="badge badge-archive">ARCHIEF</span>':''}
+    <div class="list-card-body">
+      <h3 id="cth-${item.id}">${item.title||'Naamloos'}</h3>
+      ${dateStr?`<div class="trip-date">✈️ ${dateStr}${item.tripDest?' · '+item.tripDest:''}</div>`:''}
+      ${item.tripDest&&!dateStr?`<div class="trip-date">📍 ${item.tripDest}</div>`:''}
+      <div class="meta">${done}/${total} ingepakt</div>
+      <div class="prog"><div class="prog-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="card-actions">
+      ${isArchive
+        ? `<button class="card-action-btn" onclick="event.stopPropagation();unarchiveList('${item.id}')">↩ Terughalen</button>
+           <button class="card-action-btn danger" onclick="event.stopPropagation();deleteArchived('${item.id}')">✕ Verwijderen</button>`
+        : `<button class="card-action-btn" onclick="event.stopPropagation();inlineRename('${item.id}','list')">✏️ Hernoemen</button>
+           <button class="card-action-btn" onclick="event.stopPropagation();archiveFromHome('${item.id}')">📦 Archiveren</button>
+           <button class="card-action-btn danger" onclick="event.stopPropagation();deleteList('${item.id}')">✕ Verwijderen</button>`
+      }
+    </div>`;
+  card.querySelector('.list-card-body').onclick=()=>openList(item.id,false,isArchive);
+  return card;
+}
+
+function inlineRename(id, type){
+  const el=document.getElementById('cth-'+id); if(!el) return;
+  const store=type==='list'?userData.lists:type==='tpl'?userData.templates:userData.archive;
+  const inp=document.createElement('input'); inp.className='card-title-inp'; inp.value=store[id]?.title||'';
+  el.replaceWith(inp); inp.focus(); inp.select();
+  function commit(){ const v=inp.value.trim(); if(v&&store[id]) store[id].title=v; saveUserData(); renderHome(); }
+  inp.addEventListener('blur',commit); inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Escape')inp.blur();});
+}
+window.inlineRename=inlineRename;
+
+window.deleteList=function(id){ if(!confirm('Lijst verwijderen?')) return; delete userData.lists[id]; saveUserData(); renderHome(); };
+window.deleteTpl=function(id,isShared){ if(!confirm('Template verwijderen?')) return; delete userData.templates[id]; if(isShared) deleteSharedTemplate(id); saveUserData(); renderHome(); };
+window.deleteArchived=function(id){ if(!confirm('Definitief verwijderen?')) return; delete userData.archive[id]; saveUserData(); renderHome(); };
+
+window.archiveFromHome=function(id){
+  if(!userData.lists[id]) return;
+  const item={...userData.lists[id], archivedAt:Date.now()};
+  userData.archive[id]=item; delete userData.lists[id]; saveUserData(); renderHome();
+};
+
+window.unarchiveList=function(id){
+  if(!userData.archive[id]) return;
+  const item={...userData.archive[id]}; delete item.archivedAt;
+  userData.lists[id]=item; delete userData.archive[id]; saveUserData(); renderHome();
+};
+
+// ── NEW LIST MODAL ──
 function openNewListModal(){
   const opts=document.getElementById('templateOptions'); opts.innerHTML='';
   const blank=document.createElement('button'); blank.className='template-opt blank selected'; blank.dataset.tpl='blank'; blank.textContent='Lege lijst'; blank.onclick=()=>selectTpl('blank'); opts.appendChild(blank);
@@ -408,6 +610,8 @@ function openNewListModal(){
     const btn=document.createElement('button'); btn.className='template-opt'; btn.dataset.tpl=tpl.id; btn.textContent=tpl.title; btn.onclick=()=>selectTpl(tpl.id); opts.appendChild(btn);
   });
   document.getElementById('newListName').value='';
+  document.getElementById('newListDate').value='';
+  document.getElementById('newListDest').value='';
   document.getElementById('newListModal').classList.add('open');
   setTimeout(()=>document.getElementById('newListName').focus(),100);
 }
@@ -420,16 +624,19 @@ window.createList=function(){
   const sel=document.querySelector('.template-opt.selected'), tplId=sel?sel.dataset.tpl:'blank';
   const tpl=tplId!=='blank'?(userData.templates[tplId]||sharedTemplates[tplId]):null;
   const id='list_'+Date.now();
-  userData.lists[id]={id,title:name,sections:tpl?JSON.parse(JSON.stringify(tpl.sections)):[],checked:{},createdAt:Date.now()};
-  closeModal('newListModal'); saveUserData(); openList(id,false);
+  userData.lists[id]={id,title:name,sections:tpl?JSON.parse(JSON.stringify(tpl.sections)):[],checked:{},createdAt:Date.now(),
+    tripDate:document.getElementById('newListDate').value||null,
+    tripDest:document.getElementById('newListDest').value.trim()||null};
+  closeModal('newListModal'); saveUserData(); openList(id,false,false);
 };
 
 function createBlankTemplate(){
   const id='tpl_'+Date.now();
   userData.templates[id]={id,title:'Nieuwe template',sections:[],createdAt:Date.now(),owner:currentUser.email};
-  saveUserData(); openList(id,true); setTimeout(()=>editClTitle(),200);
+  saveUserData(); openList(id,true,false); setTimeout(()=>editClTitle(),200);
 }
 
+// ── SAVE AS TEMPLATE / DUPLICATE / ARCHIVE ──
 window.saveAsTemplate=function(){
   const cur=currentData();
   document.getElementById('templateName').value=cur.title+' (template)';
@@ -449,57 +656,172 @@ window.confirmSaveTemplate=async function(){
   showStatus(shared?'Opgeslagen als gedeelde template!':'Opgeslagen als template!',3000);
 };
 
-function currentData(){ return currentListIsTemplate?(userData.templates[currentListId]||{}):(userData.lists[currentListId]||{}); }
-function updateCurrent(fn){ const store=currentListIsTemplate?userData.templates:userData.lists; fn(store[currentListId]); saveUserData(); }
+window.duplicateList=function(){
+  const cur=currentData();
+  const id='list_'+Date.now();
+  userData.lists[id]={...JSON.parse(JSON.stringify(cur)),id,title:cur.title+' (kopie)',checked:{},createdAt:Date.now()};
+  saveUserData(); showStatus('Lijst gedupliceerd!',2000); renderHome();
+  setTimeout(()=>{ goHome(); switchTab('lists'); },500);
+};
 
+window.archiveList=function(){
+  if(!currentListId||currentListIsTemplate) return;
+  if(!confirm('Deze lijst archiveren?')) return;
+  const item={...userData.lists[currentListId],archivedAt:Date.now()};
+  userData.archive[currentListId]=item; delete userData.lists[currentListId];
+  saveUserData(); goHome();
+};
+
+// ── CURRENT DATA ──
+function currentData(){
+  return currentListIsTemplate?(userData.templates[currentListId]||{}):(userData.lists[currentListId]||userData.archive[currentListId]||{});
+}
+function updateCurrent(fn){
+  const store=currentListIsTemplate?userData.templates:(userData.lists[currentListId]?userData.lists:userData.archive);
+  fn(store[currentListId]); saveUserData();
+}
+
+// ── TRIP INFO BAR ──
+function renderTripInfo(){
+  const bar=document.getElementById('tripInfoBar');
+  if(currentListIsTemplate){ bar.style.display='none'; return; }
+  bar.style.display='flex';
+  const data=currentData();
+
+  bar.innerHTML='';
+  // Departure date
+  const dateField=document.createElement('div'); dateField.className='trip-info-field';
+  dateField.innerHTML=`<span>✈️ Vertrek:</span>`;
+  const dateInp=document.createElement('input'); dateInp.type='date'; dateInp.value=data.tripDate||'';
+  dateInp.style.cursor='pointer';
+  dateInp.onchange=()=>{ updateCurrent(d=>d.tripDate=dateInp.value||null); renderHome(); };
+  dateField.appendChild(dateInp); bar.appendChild(dateField);
+
+  // Destination
+  const destField=document.createElement('div'); destField.className='trip-info-field';
+  destField.innerHTML=`<span>📍 Bestemming:</span>`;
+  const destInp=document.createElement('input'); destInp.type='text'; destInp.value=data.tripDest||''; destInp.placeholder='Toevoegen…';
+  destInp.style.cssText='border:none;outline:none;font-family:inherit;font-size:0.78rem;color:#1565C0;font-weight:600;background:transparent;width:140px';
+  destInp.onblur=()=>{ updateCurrent(d=>d.tripDest=destInp.value.trim()||null); renderHome(); };
+  destInp.onkeydown=e=>{ if(e.key==='Enter') destInp.blur(); };
+  destField.appendChild(destInp); bar.appendChild(destField);
+}
+
+// ── CHECKLIST RENDER ──
 function renderChecklist(){
   const data=currentData();
   document.getElementById('topbarTitle').textContent=data.title||'';
   const titleEl=document.getElementById('clTitle'); if(titleEl) titleEl.textContent=data.title||'';
-  document.getElementById('clSub').textContent=currentListIsTemplate?'Template – bewerkingen worden opgeslagen':'Klik om af te vinken · Enter om toe te voegen';
+  document.getElementById('clSub').textContent=currentListIsTemplate?'Template – bewerkingen worden opgeslagen':'Klik op ☐ om af te vinken · klik op tekst om te bewerken';
+  renderTripInfo();
+
   const grid=document.getElementById('grid'); grid.innerHTML='';
   let total=0,done=0;
+
   (data.sections||[]).forEach((sec,si)=>{
     let secDone=0;
     const div=document.createElement('div'); div.className='section'; div.draggable=true; div.dataset.si=si;
     const head=document.createElement('div'); head.className='sec-head';
-    const handle=document.createElement('span'); handle.className='drag-handle'; handle.textContent='⠿'; handle.title='Slepen om volgorde te wijzigen';
+    const handle=document.createElement('span'); handle.className='drag-handle'; handle.textContent='⠿'; handle.title='Sleep om volgorde te wijzigen';
     const ts=document.createElement('span'); ts.className='sec-title'; ts.id='sec-title-'+si; ts.textContent=sec.title; ts.title='Klik om te bewerken'; ts.onclick=()=>editSecTitle(si);
     const cnt=document.createElement('span'); cnt.className='sec-count';
     const db2=document.createElement('button'); db2.className='del-sec'; db2.textContent='✕'; db2.onclick=(e)=>{e.stopPropagation();deleteSection(si);};
     head.appendChild(handle); head.appendChild(ts); head.appendChild(cnt); head.appendChild(db2);
+
     const itemsDiv=document.createElement('div'); itemsDiv.className='items';
+
     (sec.items||[]).forEach((item,ii)=>{
       const k=`${si}-${ii}`, checked=!!(data.checked&&data.checked[k]);
       if(checked) secDone++; total++; if(checked) done++;
+      const noteKey=`${si}-${ii}-note`;
+      const note=(data.notes&&data.notes[noteKey])||'';
+
       const row=document.createElement('div'); row.className='item'+(checked?' done':'');
-      const box=document.createElement('div'); box.className='box'; if(checked) box.textContent='✓'; box.onclick=()=>toggleItem(si,ii);
+      row.draggable=true; row.dataset.si=si; row.dataset.ii=ii;
+
+      const idh=document.createElement('span'); idh.className='item-drag-handle'; idh.textContent='⠿'; idh.title='Sleep om volgorde te wijzigen';
+
+      const box=document.createElement('div'); box.className='box'; if(checked) box.textContent='✓';
+      box.onclick=()=>toggleItem(si,ii);
+
+      const content=document.createElement('div'); content.className='item-content';
       const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent=item; lbl.title='Klik om te bewerken'; lbl.onclick=()=>editItemLabel(si,ii,lbl);
+      content.appendChild(lbl);
+      if(note){ const nd=document.createElement('span'); nd.className='item-note'; nd.textContent=note; nd.onclick=()=>openNoteModal(si,ii,note); content.appendChild(nd); }
+
+      const actions=document.createElement('div'); actions.className='item-actions';
+      const noteBtn=document.createElement('button'); noteBtn.className='note-btn'; noteBtn.textContent='📝'; noteBtn.title='Notitie'; noteBtn.onclick=(e)=>{e.stopPropagation();openNoteModal(si,ii,note);};
       const del=document.createElement('button'); del.className='del-item'; del.textContent='✕'; del.onclick=(e)=>{e.stopPropagation();delItem(si,ii);};
-      row.appendChild(box); row.appendChild(lbl); row.appendChild(del); itemsDiv.appendChild(row);
+      actions.appendChild(noteBtn); actions.appendChild(del);
+
+      row.appendChild(idh); row.appendChild(box); row.appendChild(content); row.appendChild(actions);
+
+      // Item drag events
+      row.addEventListener('dragstart',e=>{ e.stopPropagation(); e.dataTransfer.setData('item-drag',JSON.stringify({si,ii})); e.dataTransfer.effectAllowed='move'; setTimeout(()=>row.classList.add('item-dragging'),0); });
+      row.addEventListener('dragend',()=>{ row.classList.remove('item-dragging'); document.querySelectorAll('.item').forEach(r=>r.classList.remove('item-drag-over')); });
+      row.addEventListener('dragover',e=>{ if(!e.dataTransfer.types.includes('item-drag')) return; e.preventDefault(); e.stopPropagation(); document.querySelectorAll('.item').forEach(r=>r.classList.remove('item-drag-over')); row.classList.add('item-drag-over'); });
+      row.addEventListener('dragleave',()=>row.classList.remove('item-drag-over'));
+      row.addEventListener('drop',e=>{
+        if(!e.dataTransfer.types.includes('item-drag')) return;
+        e.preventDefault(); e.stopPropagation(); row.classList.remove('item-drag-over');
+        const {si:fsi,ii:fii}=JSON.parse(e.dataTransfer.getData('item-drag'));
+        const tsi=parseInt(row.dataset.si), tii=parseInt(row.dataset.ii);
+        if(fsi===tsi&&fii===tii) return;
+        const store=currentListIsTemplate?userData.templates:(userData.lists[currentListId]?userData.lists:userData.archive);
+        const d=store[currentListId];
+        if(fsi===tsi){
+          // same section — reorder
+          const items=d.sections[fsi].items; const [moved]=items.splice(fii,1); items.splice(tii,0,moved);
+          // remap checked keys within section
+          const nc={...d.checked||{}};
+          // rebuild keys for this section
+          const sectionKeys=Object.keys(nc).filter(k=>k.startsWith(fsi+'-')&&!k.includes('note'));
+          const vals={}; sectionKeys.forEach(k=>{ const idx=parseInt(k.split('-')[1]); vals[idx]=nc[k]; delete nc[k]; });
+          const newItems=d.sections[fsi].items;
+          // re-assign: old index → new position
+          const oldOrder=[...Array(newItems.length).keys()];
+          oldOrder.forEach(newIdx=>{ const oldVal=vals[newIdx]; if(oldVal!==undefined) nc[`${fsi}-${newIdx}`]=oldVal; });
+          d.checked=nc;
+        } else {
+          // cross-section move
+          const [moved]=d.sections[fsi].items.splice(fii,1);
+          d.sections[tsi].items.splice(tii,0,moved);
+        }
+        renderChecklist(); saveUserData();
+      });
+
+      itemsDiv.appendChild(row);
     });
+
     cnt.textContent=`${secDone}/${sec.items.length}`;
     const addRow=document.createElement('div'); addRow.className='add-row'; addRow.innerHTML='<div class="add-box">+</div><input class="add-inp" placeholder="Toevoegen…">';
     const inp=addRow.querySelector('.add-inp'); inp.addEventListener('keydown',e=>{if(e.key==='Enter')addItem(si,inp);});
     itemsDiv.appendChild(addRow); div.appendChild(head); div.appendChild(itemsDiv); grid.appendChild(div);
-    div.addEventListener('dragstart',e=>{ e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain',si); setTimeout(()=>div.classList.add('dragging'),0); });
+
+    // Section drag events
+    div.addEventListener('dragstart',e=>{ if(e.dataTransfer.types.includes('item-drag')) return; e.dataTransfer.effectAllowed='move'; e.dataTransfer.setData('text/plain',si); setTimeout(()=>div.classList.add('dragging'),0); });
     div.addEventListener('dragend',()=>{ div.classList.remove('dragging'); document.querySelectorAll('.section').forEach(s=>s.classList.remove('drag-over')); });
-    div.addEventListener('dragover',e=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; document.querySelectorAll('.section').forEach(s=>s.classList.remove('drag-over')); div.classList.add('drag-over'); });
+    div.addEventListener('dragover',e=>{ if(e.dataTransfer.types.includes('item-drag')) return; e.preventDefault(); document.querySelectorAll('.section').forEach(s=>s.classList.remove('drag-over')); div.classList.add('drag-over'); });
     div.addEventListener('dragleave',()=>div.classList.remove('drag-over'));
-    div.addEventListener('drop',e=>{ e.preventDefault(); div.classList.remove('drag-over'); const fromSi=parseInt(e.dataTransfer.getData('text/plain')); const toSi=parseInt(div.dataset.si); if(fromSi===toSi) return;
-    const store=currentListIsTemplate?userData.templates:userData.lists;
-    const d=store[currentListId];
-    const secs=d.sections; const [moved]=secs.splice(fromSi,1); secs.splice(toSi,0,moved);
-    const nc={}; Object.keys(d.checked||{}).forEach(k=>{ const p=k.split('-'); const ki=parseInt(p[0]); let nki=ki; if(ki===fromSi) nki=toSi; else if(fromSi<toSi && ki>fromSi && ki<=toSi) nki=ki-1; else if(fromSi>toSi && ki>=toSi && ki<fromSi) nki=ki+1; nc[nki+'-'+p.slice(1).join('-')]=d.checked[k]; }); d.checked=nc;
-    renderChecklist();
-    saveUserData();
+    div.addEventListener('drop',e=>{
+      if(e.dataTransfer.types.includes('item-drag')) return;
+      e.preventDefault(); div.classList.remove('drag-over');
+      const fromSi=parseInt(e.dataTransfer.getData('text/plain')), toSi=parseInt(div.dataset.si);
+      if(fromSi===toSi) return;
+      const store=currentListIsTemplate?userData.templates:(userData.lists[currentListId]?userData.lists:userData.archive);
+      const d=store[currentListId];
+      const secs=d.sections; const [moved]=secs.splice(fromSi,1); secs.splice(toSi,0,moved);
+      const nc={}; Object.keys(d.checked||{}).forEach(k=>{ const p=k.split('-'); const ki=parseInt(p[0]); let nki=ki; if(ki===fromSi) nki=toSi; else if(fromSi<toSi&&ki>fromSi&&ki<=toSi) nki=ki-1; else if(fromSi>toSi&&ki>=toSi&&ki<fromSi) nki=ki+1; nc[nki+'-'+p.slice(1).join('-')]=d.checked[k]; }); d.checked=nc;
+      renderChecklist(); saveUserData();
     });
   });
+
   const pct=total?Math.round(done/total*100):0;
   document.getElementById('pb').style.width=pct+'%';
   document.getElementById('pl').textContent=`${done} van ${total} ingepakt (${pct}%)`;
 }
 
+// ── EDIT HANDLERS ──
 window.editClTitle=function(){
   const el=document.getElementById('clTitle');
   const inp=document.createElement('input'); inp.className='checklist-title-inp'; inp.value=currentData().title||'';
@@ -523,6 +845,23 @@ function editItemLabel(si,ii,lbl){
   inp.addEventListener('blur',commit); inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Escape')inp.blur();});
 }
 
+// ── NOTES ──
+function openNoteModal(si,ii,current){
+  pendingNoteKey={si,ii};
+  document.getElementById('noteText').value=current||'';
+  document.getElementById('noteModal').classList.add('open');
+  setTimeout(()=>document.getElementById('noteText').focus(),100);
+}
+
+window.saveNote=function(){
+  if(!pendingNoteKey) return;
+  const {si,ii}=pendingNoteKey;
+  const val=document.getElementById('noteText').value.trim();
+  updateCurrent(d=>{ if(!d.notes) d.notes={}; if(val) d.notes[`${si}-${ii}-note`]=val; else delete d.notes[`${si}-${ii}-note`]; });
+  closeModal('noteModal'); pendingNoteKey=null; renderChecklist();
+};
+
+// ── CRUD ──
 window.addSection=function(){
   updateCurrent(d=>{if(!d.sections)d.sections=[];d.sections.push({title:'Nieuwe categorie',items:[]});});
   renderChecklist(); setTimeout(()=>editSecTitle((currentData().sections||[]).length-1),30);
@@ -530,12 +869,7 @@ window.addSection=function(){
 
 function deleteSection(si){
   if(!confirm('Categorie verwijderen?')) return;
-  updateCurrent(d=>{
-    d.sections.splice(si,1);
-    const nc={};
-    Object.keys(d.checked||{}).forEach(k=>{const p=k.split('-'),ki=parseInt(p[0]);if(ki<si)nc[k]=d.checked[k];else if(ki>si)nc[(ki-1)+'-'+p.slice(1).join('-')]=d.checked[k];});
-    d.checked=nc;
-  }); renderChecklist();
+  updateCurrent(d=>{ d.sections.splice(si,1); const nc={}; Object.keys(d.checked||{}).forEach(k=>{const p=k.split('-'),ki=parseInt(p[0]);if(ki<si)nc[k]=d.checked[k];else if(ki>si)nc[(ki-1)+'-'+p.slice(1).join('-')]=d.checked[k];}); d.checked=nc; }); renderChecklist();
 }
 
 function addItem(si,input){
@@ -545,12 +879,7 @@ function addItem(si,input){
 }
 
 function delItem(si,ii){
-  updateCurrent(d=>{
-    d.sections[si].items.splice(ii,1);
-    const nc={};
-    Object.keys(d.checked||{}).forEach(k=>{const p=k.split('-');if(parseInt(p[0])!==si){nc[k]=d.checked[k];return;}const idx=parseInt(p[1]);if(idx<ii)nc[k]=d.checked[k];else if(idx>ii)nc[`${si}-${idx-1}`]=d.checked[k];});
-    d.checked=nc;
-  }); renderChecklist();
+  updateCurrent(d=>{ d.sections[si].items.splice(ii,1); const nc={}; Object.keys(d.checked||{}).forEach(k=>{const p=k.split('-');if(parseInt(p[0])!==si){nc[k]=d.checked[k];return;}const idx=parseInt(p[1]);if(idx<ii)nc[k]=d.checked[k];else if(idx>ii)nc[`${si}-${idx-1}`]=d.checked[k];}); d.checked=nc; }); renderChecklist();
 }
 
 function toggleItem(si,ii){
