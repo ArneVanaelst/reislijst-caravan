@@ -7,67 +7,82 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f6ff;min-height:100vh}
-
-/* ── TOPBAR ── */
+#loginView{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px}
+.login-card{background:white;border-radius:20px;box-shadow:0 4px 24px rgba(21,101,192,0.12);padding:36px 32px;width:100%;max-width:380px}
+.login-card h1{font-size:1.4rem;font-weight:700;color:#1565C0;text-align:center;margin-bottom:4px}
+.login-card p{font-size:0.8rem;color:#7a9cc4;text-align:center;margin-bottom:28px}
+.login-card label{font-size:0.75rem;font-weight:600;color:#5a87c0;display:block;margin-bottom:4px;margin-top:14px}
+.login-card input{width:100%;border:1.5px solid #BBDEFB;border-radius:8px;padding:9px 12px;font-family:inherit;font-size:0.88rem;outline:none;color:#1e2d3d}
+.login-card input:focus{border-color:#1565C0}
+.login-btn{width:100%;margin-top:20px;background:#1565C0;color:white;border:none;border-radius:10px;padding:11px;font-family:inherit;font-size:0.9rem;font-weight:700;cursor:pointer}
+.login-btn:hover{background:#0d47a1}
+.login-err{font-size:0.75rem;color:#e53935;text-align:center;margin-top:10px;min-height:18px}
+.login-switch{font-size:0.78rem;color:#7a9cc4;text-align:center;margin-top:16px;cursor:pointer}
+.login-switch span{color:#1565C0;font-weight:600}
+.login-forgot{font-size:0.72rem;color:#90CAF9;text-align:center;margin-top:8px;cursor:pointer}
+.login-forgot:hover{color:#1565C0}
 .topbar{background:#1565C0;color:white;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;z-index:100}
 .topbar-left{display:flex;align-items:center;gap:10px}
 .back-btn{background:rgba(255,255,255,0.15);border:none;color:white;border-radius:8px;padding:5px 10px;cursor:pointer;font-family:inherit;font-size:0.8rem;display:none}
 .back-btn:hover{background:rgba(255,255,255,0.25)}
 .topbar h1{font-size:1rem;font-weight:700;color:white}
-.topbar-right{display:flex;align-items:center;gap:8px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.user-lbl{font-size:0.72rem;color:rgba(255,255,255,0.8)}
+.logout-btn{background:rgba(255,255,255,0.15);border:none;color:white;border-radius:6px;padding:4px 10px;cursor:pointer;font-family:inherit;font-size:0.72rem}
+.logout-btn:hover{background:rgba(255,255,255,0.25)}
 .sync-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;animation:pulse 2s infinite;flex-shrink:0}
 .sync-dot.off{background:#ff9800;animation:none}
-.sync-lbl{font-size:0.7rem;color:rgba(255,255,255,0.8)}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-
-/* ── VIEWS ── */
 .view{display:none;padding:20px}
 .view.active{display:block}
-
-/* ── HOME ── */
-.home-tabs{display:flex;gap:0;max-width:900px;margin:0 auto 20px;border-bottom:2px solid #BBDEFB}
+.home-tabs{display:flex;max-width:900px;margin:0 auto 20px;border-bottom:2px solid #BBDEFB}
 .tab-btn{font-family:inherit;font-size:0.85rem;font-weight:600;padding:8px 20px;border:none;background:transparent;color:#7a9cc4;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px}
 .tab-btn.active{color:#1565C0;border-bottom-color:#1565C0}
 .tab-content{display:none;max-width:900px;margin:0 auto}
 .tab-content.active{display:block}
-
 .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
 .list-card{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.08);padding:16px;cursor:pointer;border:2px solid transparent;transition:all 0.15s;position:relative}
-.list-card:hover{border-color:#90CAF9;box-shadow:0 4px 16px rgba(21,101,192,0.14)}
+.list-card:hover{border-color:#90CAF9}
 .list-card h3{font-size:0.95rem;font-weight:700;color:#1e2d3d;margin-bottom:6px;padding-right:24px}
 .list-card .meta{font-size:0.75rem;color:#7a9cc4}
 .list-card .prog{height:4px;background:#e3f2fd;border-radius:99px;margin-top:10px;overflow:hidden}
 .list-card .prog-fill{height:100%;background:#1565C0;border-radius:99px}
-.list-card .card-del{position:absolute;top:10px;right:10px;background:none;border:none;color:#ccc;cursor:pointer;font-size:0.8rem;padding:2px 5px;border-radius:4px}
-.list-card .card-del:hover{color:#e53935;background:#ffeaea}
-.template-badge{display:inline-block;font-size:0.65rem;font-weight:700;background:#e3f2fd;color:#1565C0;border-radius:99px;padding:1px 8px;margin-bottom:6px}
-
+.card-del{position:absolute;top:10px;right:10px;background:none;border:none;color:#ccc;cursor:pointer;font-size:0.8rem;padding:2px 5px;border-radius:4px}
+.card-del:hover{color:#e53935;background:#ffeaea}
+.badge{display:inline-block;font-size:0.65rem;font-weight:700;border-radius:99px;padding:1px 8px;margin-bottom:6px;margin-right:3px}
+.badge-tpl{background:#e3f2fd;color:#1565C0}
+.badge-shared{background:#e8f5e9;color:#2e7d32}
+.badge-owner{background:#fff3e0;color:#e65100}
 .new-card{background:white;border-radius:14px;border:2px dashed #90CAF9;padding:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:100px;transition:all 0.15s}
 .new-card:hover{background:#e3f2fd;border-color:#1565C0}
 .new-card span{font-size:1.5rem;color:#90CAF9}
 .new-card p{font-size:0.8rem;color:#7a9cc4;font-weight:600}
-
-/* ── MODAL ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:200;align-items:center;justify-content:center;padding:20px}
 .modal-overlay.open{display:flex}
 .modal{background:white;border-radius:16px;padding:24px;width:100%;max-width:440px;box-shadow:0 8px 40px rgba(0,0,0,0.15)}
 .modal h2{font-size:1rem;font-weight:700;color:#1e2d3d;margin-bottom:16px}
 .modal label{font-size:0.78rem;color:#5a87c0;font-weight:600;display:block;margin-bottom:4px;margin-top:12px}
-.modal input{width:100%;border:1.5px solid #BBDEFB;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:0.88rem;outline:none;color:#1e2d3d}
+.modal input[type=text],.modal input[type=email]{width:100%;border:1.5px solid #BBDEFB;border-radius:8px;padding:8px 12px;font-family:inherit;font-size:0.88rem;outline:none;color:#1e2d3d}
 .modal input:focus{border-color:#1565C0}
 .template-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .template-opt{border:1.5px solid #BBDEFB;border-radius:8px;padding:8px 10px;cursor:pointer;font-family:inherit;font-size:0.78rem;color:#1e2d3d;background:white;text-align:left;font-weight:600;transition:all 0.15s}
-.template-opt:hover{border-color:#1565C0;background:#e3f2fd;color:#1565C0}
+.template-opt:hover{border-color:#1565C0;background:#e3f2fd}
 .template-opt.selected{border-color:#1565C0;background:#1565C0;color:white}
 .template-opt.blank{border-style:dashed;color:#7a9cc4}
 .modal-btns{display:flex;gap:8px;margin-top:20px;justify-content:flex-end}
 .modal-btns button{font-family:inherit;font-size:0.82rem;font-weight:600;padding:8px 18px;border-radius:8px;cursor:pointer;border:1.5px solid #BBDEFB;background:white;color:#1565C0}
 .modal-btns .primary{background:#1565C0;color:white;border-color:#1565C0}
 .modal-btns button:hover{opacity:0.85}
-
-/* ── CHECKLIST VIEW ── */
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-top:14px;padding:10px 12px;background:#f0f6ff;border-radius:8px;gap:12px}
+.toggle-row-text span{font-size:0.8rem;color:#1e2d3d;font-weight:600;display:block}
+.toggle-row-text small{font-size:0.7rem;color:#7a9cc4}
+.toggle{position:relative;width:36px;height:20px;flex-shrink:0}
+.toggle input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;background:#BBDEFB;border-radius:99px;cursor:pointer;transition:0.2s}
+.toggle-slider:before{content:'';position:absolute;width:14px;height:14px;left:3px;top:3px;background:white;border-radius:50%;transition:0.2s}
+.toggle input:checked+.toggle-slider{background:#1565C0}
+.toggle input:checked+.toggle-slider:before{transform:translateX(16px)}
 .checklist-header{max-width:900px;margin:0 auto 14px;display:flex;flex-direction:column;align-items:center;gap:4px}
-.checklist-title-wrap{display:flex;align-items:center;gap:6px}
 .checklist-title{font-size:1.3rem;font-weight:700;color:#1565C0;cursor:pointer;border-radius:6px;padding:2px 8px}
 .checklist-title:hover{background:#dceeff}
 .checklist-title-inp{font-size:1.3rem;font-weight:700;color:#1565C0;border:2px solid #90CAF9;border-radius:6px;padding:2px 8px;outline:none;font-family:inherit;text-align:center;width:300px}
@@ -75,13 +90,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .prog-wrap{background:#dce9f8;border-radius:99px;height:7px;max-width:360px;width:100%;overflow:hidden}
 .prog-bar{height:100%;background:linear-gradient(90deg,#1565C0,#42A5F5);border-radius:99px;transition:width 0.4s}
 .prog-lbl{font-size:0.72rem;color:#5a87c0}
-.cl-toolbar{display:flex;justify-content:flex-end;gap:8px;max-width:900px;margin:0 auto 12px}
+.cl-toolbar{display:flex;justify-content:flex-end;gap:8px;max-width:900px;margin:0 auto 12px;flex-wrap:wrap}
 .btn{font-family:inherit;font-size:0.75rem;font-weight:600;padding:5px 12px;border-radius:8px;border:1.5px solid #90CAF9;background:white;color:#1565C0;cursor:pointer}
 .btn:hover{background:#e3f2fd}
-.btn.danger{border-color:#ffcdd2;color:#e53935}
-.btn.danger:hover{background:#ffeaea}
-
-/* ── GRID & SECTIONS ── */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;max-width:900px;margin:0 auto}
 .section{background:white;border-radius:14px;box-shadow:0 2px 10px rgba(21,101,192,0.07);overflow:hidden}
 .sec-head{background:#BBDEFB;padding:8px 10px 6px;display:flex;align-items:center;gap:5px}
@@ -111,60 +122,70 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .add-sec-btn{width:100%;font-family:inherit;font-size:0.78rem;color:#1565C0;border:1.5px dashed #90CAF9;background:white;border-radius:14px;padding:10px;cursor:pointer;font-weight:600}
 .add-sec-btn:hover{background:#e3f2fd}
 .status{font-size:0.7rem;color:#7a9cc4;text-align:center;margin-top:8px;min-height:16px}
-
-@media print{.topbar,.cl-toolbar,.add-row,.del-item,.del-sec,.add-sec-wrap,.status{display:none!important}.section{box-shadow:none;border:1px solid #dce9f8}}
+@media print{.topbar,.cl-toolbar,.add-row,.del-item,.del-sec,.add-sec-wrap,.status{display:none!important}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
-  <div class="topbar-left">
-    <button class="back-btn" id="backBtn" onclick="goHome()">← Terug</button>
-    <h1 id="topbarTitle">Mijn Checklists</h1>
-  </div>
-  <div class="topbar-right">
-    <div class="sync-dot off" id="dot"></div>
-    <span class="sync-lbl" id="syncLbl">Verbinden...</span>
-  </div>
-</div>
-
-<!-- HOME VIEW -->
-<div class="view active" id="homeView">
-  <div class="home-tabs">
-    <button class="tab-btn active" onclick="switchTab('lists')">📋 Mijn lijsten</button>
-    <button class="tab-btn" onclick="switchTab('templates')">📁 Templates</button>
-  </div>
-  <div class="tab-content active" id="tab-lists">
-    <div class="card-grid" id="listsGrid"></div>
-  </div>
-  <div class="tab-content" id="tab-templates">
-    <div class="card-grid" id="templatesGrid"></div>
-  </div>
-</div>
-
-<!-- CHECKLIST VIEW -->
-<div class="view" id="checklistView">
-  <div class="checklist-header">
-    <div class="checklist-title-wrap">
-      <div class="checklist-title" id="clTitle" onclick="editClTitle()">Laden...</div>
+<div id="loginView">
+  <div class="login-card">
+    <h1>🚐 Mijn Checklists</h1>
+    <p id="loginSubtitle">Inloggen met je account</p>
+    <label>E-mailadres</label>
+    <input type="email" id="loginEmail" placeholder="jouw@email.com" autocomplete="email">
+    <label>Wachtwoord</label>
+    <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+    <div id="loginPasswordConfirmWrap" style="display:none">
+      <label>Wachtwoord bevestigen</label>
+      <input type="password" id="loginPasswordConfirm" placeholder="••••••••">
     </div>
-    <div class="checklist-sub" id="clSub"></div>
-    <div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
-    <div class="prog-lbl" id="pl"></div>
+    <button class="login-btn" id="loginBtn" onclick="handleAuth()">Inloggen</button>
+    <div class="login-err" id="loginErr"></div>
+    <div class="login-switch" id="loginSwitch" onclick="toggleAuthMode()">Nog geen account? <span>Registreer hier</span></div>
+    <div class="login-forgot" id="loginForgot" onclick="resetPassword()">Wachtwoord vergeten?</div>
   </div>
-  <div class="cl-toolbar">
-    <button class="btn" onclick="saveAsTemplate()">💾 Opslaan als template</button>
-    <button class="btn" onclick="resetChecked()">↺ Vinkjes resetten</button>
-    <button class="btn" onclick="window.print()">🖨 Afdrukken</button>
-  </div>
-  <div class="grid" id="grid"></div>
-  <div class="add-sec-wrap">
-    <button class="add-sec-btn" onclick="addSection()">+ Nieuwe categorie toevoegen</button>
-  </div>
-  <div class="status" id="status"></div>
 </div>
 
-<!-- NEW LIST MODAL -->
+<div id="appView" style="display:none">
+  <div class="topbar">
+    <div class="topbar-left">
+      <button class="back-btn" id="backBtn" onclick="goHome()">← Terug</button>
+      <h1 id="topbarTitle">Mijn Checklists</h1>
+    </div>
+    <div class="topbar-right">
+      <span class="user-lbl" id="userLbl"></span>
+      <div class="sync-dot off" id="dot"></div>
+      <button class="logout-btn" onclick="doLogout()">Uitloggen</button>
+    </div>
+  </div>
+
+  <div class="view active" id="homeView">
+    <div class="home-tabs">
+      <button class="tab-btn active" onclick="switchTab('lists')">📋 Mijn lijsten</button>
+      <button class="tab-btn" onclick="switchTab('templates')">📁 Templates</button>
+    </div>
+    <div class="tab-content active" id="tab-lists"><div class="card-grid" id="listsGrid"></div></div>
+    <div class="tab-content" id="tab-templates"><div class="card-grid" id="templatesGrid"></div></div>
+  </div>
+
+  <div class="view" id="checklistView">
+    <div class="checklist-header">
+      <div class="checklist-title" id="clTitle" onclick="editClTitle()">Laden...</div>
+      <div class="checklist-sub" id="clSub"></div>
+      <div class="prog-wrap"><div class="prog-bar" id="pb"></div></div>
+      <div class="prog-lbl" id="pl"></div>
+    </div>
+    <div class="cl-toolbar">
+      <button class="btn" onclick="saveAsTemplate()">💾 Opslaan als template</button>
+      <button class="btn" onclick="resetChecked()">↺ Vinkjes resetten</button>
+      <button class="btn" onclick="window.print()">🖨 Afdrukken</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="add-sec-wrap"><button class="add-sec-btn" onclick="addSection()">+ Nieuwe categorie toevoegen</button></div>
+    <div class="status" id="status"></div>
+  </div>
+</div>
+
 <div class="modal-overlay" id="newListModal">
   <div class="modal">
     <h2>Nieuwe checklist</h2>
@@ -179,12 +200,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- SAVE AS TEMPLATE MODAL -->
 <div class="modal-overlay" id="saveTemplateModal">
   <div class="modal">
     <h2>Opslaan als template</h2>
     <label>Naam van de template</label>
     <input type="text" id="templateName" placeholder="bijv. Caravan zomer">
+    <div class="toggle-row">
+      <div class="toggle-row-text">
+        <span>Delen met andere gebruikers</span>
+        <small>Iedereen met een account kan deze template gebruiken</small>
+      </div>
+      <label class="toggle"><input type="checkbox" id="templateShared"><span class="toggle-slider"></span></label>
+    </div>
     <div class="modal-btns">
       <button onclick="closeModal('saveTemplateModal')">Annuleren</button>
       <button class="primary" onclick="confirmSaveTemplate()">Opslaan</button>
@@ -194,7 +221,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, set, get, remove } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getDatabase, ref, onValue, set, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey:            "AIzaSyAXPAjc_gV56nSH7pEwa4aICVAjaoNx7kc",
@@ -205,6 +233,8 @@ const firebaseConfig = {
   messagingSenderId: "992765711731",
   appId:             "1:992765711731:web:37cdf225b60242d88b2106"
 };
+
+const ALLOWED_EMAILS = ["arnevanaelst@gmail.com","fampieters@outlook.be"];
 
 const caravanSections = [
   {title:"📱 Elektronica",items:["GSM","GSM-laders","GSM-oortjes","E-reader + lader","Notitieboek voor onderweg","Gezelschapsspelletjes"]},
@@ -218,61 +248,102 @@ const caravanSections = [
   {title:"🚿 Badkamer",items:["Haarborstel","Haardroger / blazer","Schmink","Zak om te gaan douchen","Zakdoeken"]},
 ];
 
-// ── STATE ──
-let db, appData = { lists:{}, templates:{} };
-let currentListId = null;
-let ignoreNext = false;
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
+const auth = getAuth(fbApp);
 
-// ── FIREBASE ──
-const app = initializeApp(firebaseConfig);
-db = getDatabase(app);
-const rootRef = ref(db, 'app');
+let currentUser=null, currentListId=null, currentListIsTemplate=false;
+let userData={lists:{},templates:{}}, sharedTemplates={};
+let userDataRef=null, sharedRef=null, ignoreNext=false;
+let authMode='login';
 
-onValue(rootRef, snap => {
-  if(ignoreNext){ ignoreNext=false; return; }
-  const val = snap.val();
-  if(val){
-    appData = val;
-    // ensure templates exist
-    if(!appData.templates) appData.templates = {};
-    if(!appData.lists) appData.lists = {};
+onAuthStateChanged(auth, user => {
+  if(user){
+    if(!ALLOWED_EMAILS.includes(user.email)){ showLoginErr("Dit e-mailadres heeft geen toegang."); signOut(auth); return; }
+    currentUser=user;
+    document.getElementById('loginView').style.display='none';
+    document.getElementById('appView').style.display='block';
+    document.getElementById('userLbl').textContent=user.email;
+    subscribeData();
   } else {
-    // First load — seed default template
-    appData = { lists:{}, templates:{} };
-    const tid = 'tpl_' + Date.now();
-    appData.templates[tid] = {
-      id: tid,
-      title: "Caravan-checklist Italië",
-      sections: JSON.parse(JSON.stringify(caravanSections)),
-      createdAt: Date.now()
-    };
-    saveAll();
+    currentUser=null;
+    document.getElementById('loginView').style.display='flex';
+    document.getElementById('appView').style.display='none';
+    if(userDataRef) off(userDataRef);
+    if(sharedRef) off(sharedRef);
   }
-  setSyncStatus(true,'Gesynchroniseerd');
-  if(currentListId) renderChecklist();
-  else renderHome();
-}, err => setSyncStatus(false,'Verbindingsfout'));
+});
 
-async function saveAll(){
-  ignoreNext = true;
-  await set(rootRef, appData);
-  setSyncStatus(true,'Opgeslagen');
+window.toggleAuthMode=function(){
+  authMode=authMode==='login'?'register':'login';
+  const r=authMode==='register';
+  document.getElementById('loginSubtitle').textContent=r?'Maak je account aan':'Inloggen met je account';
+  document.getElementById('loginBtn').textContent=r?'Account aanmaken':'Inloggen';
+  document.getElementById('loginSwitch').innerHTML=r?'Al een account? <span>Inloggen</span>':'Nog geen account? <span>Registreer hier</span>';
+  document.getElementById('loginPasswordConfirmWrap').style.display=r?'block':'none';
+  document.getElementById('loginForgot').style.display=r?'none':'block';
+  document.getElementById('loginErr').textContent='';
+};
+
+window.handleAuth=async function(){
+  const email=document.getElementById('loginEmail').value.trim();
+  const pass=document.getElementById('loginPassword').value;
+  showLoginErr('');
+  if(!ALLOWED_EMAILS.includes(email)){ showLoginErr("Dit e-mailadres heeft geen toegang."); return; }
+  if(authMode==='register'){
+    const c=document.getElementById('loginPasswordConfirm').value;
+    if(pass!==c){ showLoginErr("Wachtwoorden komen niet overeen."); return; }
+    if(pass.length<6){ showLoginErr("Wachtwoord moet minstens 6 tekens zijn."); return; }
+    try{ await createUserWithEmailAndPassword(auth,email,pass); }
+    catch(e){ showLoginErr(friendlyError(e.code)); }
+  } else {
+    try{ await signInWithEmailAndPassword(auth,email,pass); }
+    catch(e){ showLoginErr(friendlyError(e.code)); }
+  }
+};
+
+window.resetPassword=async function(){
+  const email=document.getElementById('loginEmail').value.trim();
+  if(!email){ showLoginErr("Vul eerst je e-mailadres in."); return; }
+  try{ await sendPasswordResetEmail(auth,email); showLoginErr("Reset-e-mail verstuurd!"); }
+  catch(e){ showLoginErr(friendlyError(e.code)); }
+};
+
+window.doLogout=function(){ signOut(auth); };
+
+function showLoginErr(m){ document.getElementById('loginErr').textContent=m; }
+function friendlyError(c){
+  return({'auth/user-not-found':'Geen account gevonden.','auth/wrong-password':'Fout wachtwoord.','auth/invalid-credential':'Fout e-mailadres of wachtwoord.','auth/email-already-in-use':'Account bestaat al.','auth/too-many-requests':'Te veel pogingen, probeer later.','auth/invalid-email':'Ongeldig e-mailadres.'}[c])||'Er is iets misgegaan.';
 }
 
-function setSyncStatus(on, msg){
-  document.getElementById('dot').className='sync-dot'+(on?'':' off');
-  document.getElementById('syncLbl').textContent=msg;
+function subscribeData(){
+  const uid=currentUser.uid;
+  userDataRef=ref(db,`users/${uid}`);
+  sharedRef=ref(db,'sharedTemplates');
+  onValue(userDataRef,snap=>{
+    if(ignoreNext){ignoreNext=false;return;}
+    const val=snap.val();
+    if(val){ userData=val; if(!userData.lists) userData.lists={}; if(!userData.templates) userData.templates={}; }
+    else {
+      userData={lists:{},templates:{}};
+      const tid='tpl_'+Date.now();
+      userData.templates[tid]={id:tid,title:"Caravan-checklist Italië",sections:JSON.parse(JSON.stringify(caravanSections)),createdAt:Date.now(),owner:currentUser.email};
+      saveUserData();
+    }
+    setSyncStatus(true);
+    if(currentListId) renderChecklist(); else renderHome();
+  },()=>setSyncStatus(false));
+  onValue(sharedRef,snap=>{ sharedTemplates=snap.val()||{}; if(!currentListId) renderHome(); });
 }
 
-function showStatus(msg, ms=2000){
-  const el=document.getElementById('status');
-  el.textContent=msg;
-  if(ms) setTimeout(()=>{ if(el.textContent===msg) el.textContent=''; },ms);
-}
+async function saveUserData(){ ignoreNext=true; await set(userDataRef,userData); setSyncStatus(true); }
+async function saveSharedTemplate(id,data){ await set(ref(db,`sharedTemplates/${id}`),data); }
+async function deleteSharedTemplate(id){ await set(ref(db,`sharedTemplates/${id}`),null); }
+function setSyncStatus(on){ document.getElementById('dot').className='sync-dot'+(on?'':' off'); }
+function showStatus(msg,ms=2000){ const el=document.getElementById('status'); el.textContent=msg; if(ms) setTimeout(()=>{if(el.textContent===msg)el.textContent='';},ms); }
 
-// ── NAVIGATION ──
-window.goHome = function(){
-  currentListId = null;
+window.goHome=function(){
+  currentListId=null; currentListIsTemplate=false;
   document.getElementById('homeView').classList.add('active');
   document.getElementById('checklistView').classList.remove('active');
   document.getElementById('backBtn').style.display='none';
@@ -280,334 +351,198 @@ window.goHome = function(){
   renderHome();
 };
 
-function openList(id){
-  currentListId = id;
+function openList(id,isTemplate){
+  currentListId=id; currentListIsTemplate=!!isTemplate;
   document.getElementById('homeView').classList.remove('active');
   document.getElementById('checklistView').classList.add('active');
   document.getElementById('backBtn').style.display='inline-block';
   renderChecklist();
 }
 
-// ── TABS ──
-window.switchTab = function(tab){
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active', ['lists','templates'][i]===tab));
+window.switchTab=function(tab){
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>b.classList.toggle('active',['lists','templates'][i]===tab));
   document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
 };
 
-// ── HOME RENDER ──
 function renderHome(){
   document.getElementById('topbarTitle').textContent='Mijn Checklists';
-  renderGrid('listsGrid', Object.values(appData.lists||{}), false);
-  renderGrid('templatesGrid', Object.values(appData.templates||{}), true);
-}
-
-function renderGrid(gridId, items, isTemplate){
-  const grid = document.getElementById(gridId);
-  grid.innerHTML='';
-
-  items.sort((a,b)=>(b.createdAt||0)-(a.createdAt||0));
-
-  items.forEach(item=>{
-    const card = document.createElement('div');
-    card.className='list-card';
-    let prog='';
-    if(!isTemplate){
-      const secs = item.sections||[];
-      const total = secs.reduce((s,sec)=>s+(sec.items||[]).length,0);
-      const done = Object.values(item.checked||{}).filter(Boolean).length;
-      const pct = total?Math.round(done/total*100):0;
-      prog=`<div class="meta">${done}/${total} ingepakt</div><div class="prog"><div class="prog-fill" style="width:${pct}%"></div></div>`;
-    }
-    card.innerHTML=`
-      ${isTemplate?'<div class="template-badge">TEMPLATE</div>':''}
-      <h3>${item.title||'Naamloos'}</h3>
-      ${prog}
-      <button class="card-del" title="Verwijderen">✕</button>
-    `;
-    card.onclick=()=>openList(item.id);
-    card.querySelector('.card-del').onclick=(e)=>{
-      e.stopPropagation();
-      if(!confirm(`"${item.title}" verwijderen?`)) return;
-      if(isTemplate) delete appData.templates[item.id];
-      else delete appData.lists[item.id];
-      saveAll(); renderHome();
-    };
-    grid.appendChild(card);
+  const lg=document.getElementById('listsGrid'); lg.innerHTML='';
+  Object.values(userData.lists||{}).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
+    const secs=item.sections||[], total=secs.reduce((s,sec)=>s+(sec.items||[]).length,0);
+    const done=Object.values(item.checked||{}).filter(Boolean).length, pct=total?Math.round(done/total*100):0;
+    const card=document.createElement('div'); card.className='list-card';
+    card.innerHTML=`<h3>${item.title||'Naamloos'}</h3><div class="meta">${done}/${total} ingepakt</div><div class="prog"><div class="prog-fill" style="width:${pct}%"></div></div><button class="card-del">✕</button>`;
+    card.onclick=()=>openList(item.id,false);
+    card.querySelector('.card-del').onclick=(e)=>{e.stopPropagation();if(!confirm(`"${item.title}" verwijderen?`))return;delete userData.lists[item.id];saveUserData();renderHome();};
+    lg.appendChild(card);
   });
+  const nc=document.createElement('div'); nc.className='new-card'; nc.innerHTML='<span>+</span><p>Nieuwe checklist</p>'; nc.onclick=openNewListModal; lg.appendChild(nc);
 
-  // New card
-  const newCard = document.createElement('div');
-  newCard.className='new-card';
-  newCard.innerHTML=`<span>+</span><p>${isTemplate?'Nieuwe template':'Nieuwe checklist'}</p>`;
-  newCard.onclick=()=> isTemplate ? createBlankTemplate() : openNewListModal();
-  grid.appendChild(newCard);
+  const tg=document.getElementById('templatesGrid'); tg.innerHTML='';
+  Object.values(userData.templates||{}).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
+    const isShared=!!sharedTemplates[item.id];
+    const card=document.createElement('div'); card.className='list-card';
+    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span>${isShared?'<span class="badge badge-shared">GEDEELD</span>':''}</div><h3>${item.title||'Naamloos'}</h3><div class="meta">${(item.sections||[]).length} categorieën</div><button class="card-del">✕</button>`;
+    card.onclick=()=>openList(item.id,true);
+    card.querySelector('.card-del').onclick=(e)=>{e.stopPropagation();if(!confirm(`"${item.title}" verwijderen?`))return;delete userData.templates[item.id];if(isShared)deleteSharedTemplate(item.id);saveUserData();renderHome();};
+    tg.appendChild(card);
+  });
+  Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
+    const card=document.createElement('div'); card.className='list-card';
+    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span> <span class="badge badge-owner">VAN ${item.owner||'ander'}</span></div><h3>${item.title||'Naamloos'}</h3><div class="meta">${(item.sections||[]).length} categorieën · Gedeeld</div>`;
+    card.onclick=()=>{const id='tpl_'+Date.now();userData.templates[id]={...JSON.parse(JSON.stringify(item)),id,createdAt:Date.now(),owner:currentUser.email};saveUserData();openList(id,true);};
+    tg.appendChild(card);
+  });
+  const nt=document.createElement('div'); nt.className='new-card'; nt.innerHTML='<span>+</span><p>Nieuwe template</p>'; nt.onclick=createBlankTemplate; tg.appendChild(nt);
 }
 
-// ── NEW LIST MODAL ──
 function openNewListModal(){
-  // Build template options
-  const opts = document.getElementById('templateOptions');
-  opts.innerHTML='';
-  const blank = document.createElement('button');
-  blank.className='template-opt blank selected';
-  blank.dataset.tpl='blank';
-  blank.textContent='Lege lijst';
-  blank.onclick=()=>selectTpl('blank');
-  opts.appendChild(blank);
-
-  Object.values(appData.templates||{}).forEach(tpl=>{
-    const btn = document.createElement('button');
-    btn.className='template-opt';
-    btn.dataset.tpl=tpl.id;
-    btn.textContent=tpl.title;
-    btn.onclick=()=>selectTpl(tpl.id);
-    opts.appendChild(btn);
+  const opts=document.getElementById('templateOptions'); opts.innerHTML='';
+  const blank=document.createElement('button'); blank.className='template-opt blank selected'; blank.dataset.tpl='blank'; blank.textContent='Lege lijst'; blank.onclick=()=>selectTpl('blank'); opts.appendChild(blank);
+  [...Object.values(userData.templates||{}),...Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email)].forEach(tpl=>{
+    const btn=document.createElement('button'); btn.className='template-opt'; btn.dataset.tpl=tpl.id; btn.textContent=tpl.title; btn.onclick=()=>selectTpl(tpl.id); opts.appendChild(btn);
   });
-
   document.getElementById('newListName').value='';
   document.getElementById('newListModal').classList.add('open');
   setTimeout(()=>document.getElementById('newListName').focus(),100);
 }
 
-function selectTpl(id){
-  document.querySelectorAll('.template-opt').forEach(b=>b.classList.toggle('selected', b.dataset.tpl===id));
-}
+function selectTpl(id){ document.querySelectorAll('.template-opt').forEach(b=>b.classList.toggle('selected',b.dataset.tpl===id)); }
+window.closeModal=function(id){ document.getElementById(id).classList.remove('open'); };
 
-window.closeModal = function(id){ document.getElementById(id).classList.remove('open'); };
-
-window.createList = function(){
-  const name = document.getElementById('newListName').value.trim();
-  if(!name){ document.getElementById('newListName').focus(); return; }
-  const selected = document.querySelector('.template-opt.selected');
-  const tplId = selected ? selected.dataset.tpl : 'blank';
-  const tpl = tplId !== 'blank' ? appData.templates[tplId] : null;
-  const id = 'list_' + Date.now();
-  appData.lists[id] = {
-    id, title: name,
-    sections: tpl ? JSON.parse(JSON.stringify(tpl.sections)) : [],
-    checked: {},
-    createdAt: Date.now()
-  };
-  closeModal('newListModal');
-  saveAll();
-  openList(id);
+window.createList=function(){
+  const name=document.getElementById('newListName').value.trim(); if(!name){document.getElementById('newListName').focus();return;}
+  const sel=document.querySelector('.template-opt.selected'), tplId=sel?sel.dataset.tpl:'blank';
+  const tpl=tplId!=='blank'?(userData.templates[tplId]||sharedTemplates[tplId]):null;
+  const id='list_'+Date.now();
+  userData.lists[id]={id,title:name,sections:tpl?JSON.parse(JSON.stringify(tpl.sections)):[],checked:{},createdAt:Date.now()};
+  closeModal('newListModal'); saveUserData(); openList(id,false);
 };
 
 function createBlankTemplate(){
-  const id = 'tpl_' + Date.now();
-  appData.templates[id] = { id, title:'Nieuwe template', sections:[], createdAt:Date.now() };
-  saveAll();
-  openList(id);
-  setTimeout(()=>editClTitle(),200);
+  const id='tpl_'+Date.now();
+  userData.templates[id]={id,title:'Nieuwe template',sections:[],createdAt:Date.now(),owner:currentUser.email};
+  saveUserData(); openList(id,true); setTimeout(()=>editClTitle(),200);
 }
 
-// ── SAVE AS TEMPLATE ──
-window.saveAsTemplate = function(){
-  const cur = currentData();
-  document.getElementById('templateName').value = cur.title + ' (template)';
+window.saveAsTemplate=function(){
+  const cur=currentData();
+  document.getElementById('templateName').value=cur.title+' (template)';
+  document.getElementById('templateShared').checked=false;
   document.getElementById('saveTemplateModal').classList.add('open');
   setTimeout(()=>document.getElementById('templateName').focus(),100);
 };
 
-window.confirmSaveTemplate = function(){
-  const name = document.getElementById('templateName').value.trim();
-  if(!name) return;
-  const cur = currentData();
-  const id = 'tpl_' + Date.now();
-  appData.templates[id] = {
-    id, title: name,
-    sections: JSON.parse(JSON.stringify(cur.sections||[])),
-    createdAt: Date.now()
-  };
-  closeModal('saveTemplateModal');
-  saveAll();
-  showStatus('Opgeslagen als template!', 3000);
+window.confirmSaveTemplate=async function(){
+  const name=document.getElementById('templateName').value.trim(); if(!name) return;
+  const shared=document.getElementById('templateShared').checked, cur=currentData();
+  const id='tpl_'+Date.now();
+  const tplData={id,title:name,sections:JSON.parse(JSON.stringify(cur.sections||[])),createdAt:Date.now(),owner:currentUser.email};
+  userData.templates[id]=tplData;
+  if(shared) await saveSharedTemplate(id,tplData);
+  closeModal('saveTemplateModal'); saveUserData();
+  showStatus(shared?'Opgeslagen als gedeelde template!':'Opgeslagen als template!',3000);
 };
 
-// ── CURRENT DATA HELPERS ──
-function currentData(){
-  return appData.lists[currentListId] || appData.templates[currentListId] || {};
-}
-function isTemplate(){ return !!appData.templates[currentListId]; }
-function updateCurrent(fn){
-  const store = isTemplate() ? appData.templates : appData.lists;
-  fn(store[currentListId]);
-  saveAll();
-}
+function currentData(){ return currentListIsTemplate?(userData.templates[currentListId]||{}):(userData.lists[currentListId]||{}); }
+function updateCurrent(fn){ const store=currentListIsTemplate?userData.templates:userData.lists; fn(store[currentListId]); saveUserData(); }
 
-// ── CHECKLIST RENDER ──
 function renderChecklist(){
-  const data = currentData();
-  document.getElementById('topbarTitle').textContent = data.title||'';
-
-  const titleEl = document.getElementById('clTitle');
-  if(titleEl) titleEl.textContent = data.title||'';
-  document.getElementById('clSub').textContent = isTemplate() ? 'Template — bewerkingen worden opgeslagen' : 'Klik om af te vinken · Enter om toe te voegen';
-
-  const grid = document.getElementById('grid');
-  grid.innerHTML='';
-  let total=0, done=0;
-
+  const data=currentData();
+  document.getElementById('topbarTitle').textContent=data.title||'';
+  const titleEl=document.getElementById('clTitle'); if(titleEl) titleEl.textContent=data.title||'';
+  document.getElementById('clSub').textContent=currentListIsTemplate?'Template – bewerkingen worden opgeslagen':'Klik om af te vinken · Enter om toe te voegen';
+  const grid=document.getElementById('grid'); grid.innerHTML='';
+  let total=0,done=0;
   (data.sections||[]).forEach((sec,si)=>{
     let secDone=0;
     const div=document.createElement('div'); div.className='section';
     const head=document.createElement('div'); head.className='sec-head';
-
-    const titleSpan=document.createElement('span');
-    titleSpan.className='sec-title'; titleSpan.id='sec-title-'+si;
-    titleSpan.textContent=sec.title; titleSpan.title='Klik om te bewerken';
-    titleSpan.onclick=()=>editSecTitle(si);
-
+    const ts=document.createElement('span'); ts.className='sec-title'; ts.id='sec-title-'+si; ts.textContent=sec.title; ts.title='Klik om te bewerken'; ts.onclick=()=>editSecTitle(si);
     const cnt=document.createElement('span'); cnt.className='sec-count';
-    const delBtn=document.createElement('button'); delBtn.className='del-sec';
-    delBtn.textContent='✕'; delBtn.title='Verwijderen';
-    delBtn.onclick=(e)=>{ e.stopPropagation(); deleteSection(si); };
-    head.appendChild(titleSpan); head.appendChild(cnt); head.appendChild(delBtn);
-
+    const db2=document.createElement('button'); db2.className='del-sec'; db2.textContent='✕'; db2.onclick=(e)=>{e.stopPropagation();deleteSection(si);};
+    head.appendChild(ts); head.appendChild(cnt); head.appendChild(db2);
     const itemsDiv=document.createElement('div'); itemsDiv.className='items';
     (sec.items||[]).forEach((item,ii)=>{
-      const k=`${si}-${ii}`;
-      const checked=!!(data.checked&&data.checked[k]);
-      if(checked) secDone++;
-      total++; if(checked) done++;
-
+      const k=`${si}-${ii}`, checked=!!(data.checked&&data.checked[k]);
+      if(checked) secDone++; total++; if(checked) done++;
       const row=document.createElement('div'); row.className='item'+(checked?' done':'');
-
-      const box=document.createElement('div'); box.className='box';
-      if(checked) box.textContent='✓';
-      box.onclick=()=>toggleItem(si,ii);
-
-      const lbl=document.createElement('span'); lbl.className='lbl';
-      lbl.textContent=item; lbl.title='Klik om te bewerken';
-      lbl.onclick=()=>editItemLabel(si,ii,lbl);
-
-      const del=document.createElement('button'); del.className='del-item'; del.textContent='✕';
-      del.onclick=(e)=>{ e.stopPropagation(); delItem(si,ii); };
-
-      row.appendChild(box); row.appendChild(lbl); row.appendChild(del);
-      itemsDiv.appendChild(row);
+      const box=document.createElement('div'); box.className='box'; if(checked) box.textContent='✓'; box.onclick=()=>toggleItem(si,ii);
+      const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent=item; lbl.title='Klik om te bewerken'; lbl.onclick=()=>editItemLabel(si,ii,lbl);
+      const del=document.createElement('button'); del.className='del-item'; del.textContent='✕'; del.onclick=(e)=>{e.stopPropagation();delItem(si,ii);};
+      row.appendChild(box); row.appendChild(lbl); row.appendChild(del); itemsDiv.appendChild(row);
     });
-
     cnt.textContent=`${secDone}/${sec.items.length}`;
-
-    const addRow=document.createElement('div'); addRow.className='add-row';
-    addRow.innerHTML='<div class="add-box">+</div><input class="add-inp" placeholder="Toevoegen…">';
-    const inp=addRow.querySelector('.add-inp');
-    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') addItem(si,inp); });
-    itemsDiv.appendChild(addRow);
-
-    div.appendChild(head); div.appendChild(itemsDiv);
-    grid.appendChild(div);
+    const addRow=document.createElement('div'); addRow.className='add-row'; addRow.innerHTML='<div class="add-box">+</div><input class="add-inp" placeholder="Toevoegen…">';
+    const inp=addRow.querySelector('.add-inp'); inp.addEventListener('keydown',e=>{if(e.key==='Enter')addItem(si,inp);});
+    itemsDiv.appendChild(addRow); div.appendChild(head); div.appendChild(itemsDiv); grid.appendChild(div);
   });
-
   const pct=total?Math.round(done/total*100):0;
   document.getElementById('pb').style.width=pct+'%';
   document.getElementById('pl').textContent=`${done} van ${total} ingepakt (${pct}%)`;
 }
 
-// ── EDIT HANDLERS ──
-window.editClTitle = function(){
+window.editClTitle=function(){
   const el=document.getElementById('clTitle');
-  const inp=document.createElement('input');
-  inp.className='checklist-title-inp';
-  inp.value=currentData().title||'';
+  const inp=document.createElement('input'); inp.className='checklist-title-inp'; inp.value=currentData().title||'';
   el.replaceWith(inp); inp.focus(); inp.select();
-  function commit(){
-    const v=inp.value.trim();
-    if(v) updateCurrent(d=>d.title=v);
-    renderChecklist();
-  }
-  inp.addEventListener('blur',commit);
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+  function commit(){ const v=inp.value.trim(); if(v) updateCurrent(d=>d.title=v); renderChecklist(); }
+  inp.addEventListener('blur',commit); inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Escape')inp.blur();});
 };
 
 function editSecTitle(si){
-  const span=document.getElementById('sec-title-'+si);
-  if(!span) return;
-  const inp=document.createElement('input'); inp.className='sec-title-inp';
-  inp.value=currentData().sections[si].title;
+  const span=document.getElementById('sec-title-'+si); if(!span) return;
+  const inp=document.createElement('input'); inp.className='sec-title-inp'; inp.value=currentData().sections[si].title;
   span.replaceWith(inp); inp.focus(); inp.select();
-  function commit(){
-    const v=inp.value.trim();
-    if(v) updateCurrent(d=>d.sections[si].title=v);
-    renderChecklist();
-  }
-  inp.addEventListener('blur',commit);
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+  function commit(){ const v=inp.value.trim(); if(v) updateCurrent(d=>d.sections[si].title=v); renderChecklist(); }
+  inp.addEventListener('blur',commit); inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Escape')inp.blur();});
 }
 
-function editItemLabel(si, ii, lbl){
-  const inp=document.createElement('input'); inp.className='lbl-inp';
-  inp.value=currentData().sections[si].items[ii];
+function editItemLabel(si,ii,lbl){
+  const inp=document.createElement('input'); inp.className='lbl-inp'; inp.value=currentData().sections[si].items[ii];
   lbl.replaceWith(inp); inp.focus(); inp.select();
-  function commit(){
-    const v=inp.value.trim();
-    if(v) updateCurrent(d=>d.sections[si].items[ii]=v);
-    renderChecklist();
-  }
-  inp.addEventListener('blur',commit);
-  inp.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key==='Escape') inp.blur(); });
+  function commit(){ const v=inp.value.trim(); if(v) updateCurrent(d=>d.sections[si].items[ii]=v); renderChecklist(); }
+  inp.addEventListener('blur',commit); inp.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key==='Escape')inp.blur();});
 }
 
-// ── CRUD ──
-window.addSection = function(){
-  updateCurrent(d=>{ if(!d.sections) d.sections=[]; d.sections.push({title:'Nieuwe categorie',items:[]}); });
-  renderChecklist();
-  setTimeout(()=>editSecTitle((currentData().sections||[]).length-1),30);
+window.addSection=function(){
+  updateCurrent(d=>{if(!d.sections)d.sections=[];d.sections.push({title:'Nieuwe categorie',items:[]});});
+  renderChecklist(); setTimeout(()=>editSecTitle((currentData().sections||[]).length-1),30);
 };
 
 function deleteSection(si){
-  if(!confirm(`Categorie verwijderen?`)) return;
+  if(!confirm('Categorie verwijderen?')) return;
   updateCurrent(d=>{
     d.sections.splice(si,1);
     const nc={};
-    Object.keys(d.checked||{}).forEach(k=>{
-      const p=k.split('-'); const ki=parseInt(p[0]);
-      if(ki<si) nc[k]=d.checked[k];
-      else if(ki>si) nc[(ki-1)+'-'+p.slice(1).join('-')]=d.checked[k];
-    });
+    Object.keys(d.checked||{}).forEach(k=>{const p=k.split('-'),ki=parseInt(p[0]);if(ki<si)nc[k]=d.checked[k];else if(ki>si)nc[(ki-1)+'-'+p.slice(1).join('-')]=d.checked[k];});
     d.checked=nc;
-  });
-  renderChecklist();
+  }); renderChecklist();
 }
 
-function addItem(si, input){
+function addItem(si,input){
   const v=input.value.trim(); if(!v) return;
-  updateCurrent(d=>d.sections[si].items.push(v));
-  input.value='';
-  renderChecklist();
-  setTimeout(()=>{ const ins=document.querySelectorAll('.add-inp'); if(ins[si]) ins[si].focus(); },20);
+  updateCurrent(d=>d.sections[si].items.push(v)); input.value=''; renderChecklist();
+  setTimeout(()=>{const ins=document.querySelectorAll('.add-inp');if(ins[si])ins[si].focus();},20);
 }
 
 function delItem(si,ii){
   updateCurrent(d=>{
     d.sections[si].items.splice(ii,1);
     const nc={};
-    Object.keys(d.checked||{}).forEach(k=>{
-      const p=k.split('-');
-      if(parseInt(p[0])!==si){ nc[k]=d.checked[k]; return; }
-      const idx=parseInt(p[1]);
-      if(idx<ii) nc[k]=d.checked[k];
-      else if(idx>ii) nc[`${si}-${idx-1}`]=d.checked[k];
-    });
+    Object.keys(d.checked||{}).forEach(k=>{const p=k.split('-');if(parseInt(p[0])!==si){nc[k]=d.checked[k];return;}const idx=parseInt(p[1]);if(idx<ii)nc[k]=d.checked[k];else if(idx>ii)nc[`${si}-${idx-1}`]=d.checked[k];});
     d.checked=nc;
-  });
-  renderChecklist();
+  }); renderChecklist();
 }
 
 function toggleItem(si,ii){
-  updateCurrent(d=>{
-    if(!d.checked) d.checked={};
-    d.checked[`${si}-${ii}`]=!d.checked[`${si}-${ii}`];
-  });
-  renderChecklist();
+  updateCurrent(d=>{if(!d.checked)d.checked={};d.checked[`${si}-${ii}`]=!d.checked[`${si}-${ii}`];}); renderChecklist();
 }
 
-window.resetChecked = function(){
+window.resetChecked=function(){
   if(!confirm('Alle vinkjes resetten?')) return;
-  updateCurrent(d=>d.checked={});
-  renderChecklist();
+  updateCurrent(d=>d.checked={}); renderChecklist();
 };
 </script>
 </body>
