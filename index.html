@@ -69,8 +69,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .card-del:hover{color:#e53935;background:#ffeaea}
 .badge{display:inline-block;font-size:0.62rem;font-weight:700;border-radius:99px;padding:1px 7px;margin-bottom:5px;margin-right:3px}
 .badge-tpl{background:#e3f2fd;color:#1565C0}
-.badge-shared{background:#e8f5e9;color:#2e7d32}
-.badge-owner{background:#fff3e0;color:#e65100}
 .badge-archive{background:#f3e5f5;color:#7b1fa2}
 .new-card{background:white;border-radius:14px;border:2px dashed #90CAF9;padding:16px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:100px;transition:all 0.15s}
 .new-card:hover{background:#e3f2fd;border-color:#1565C0}
@@ -330,13 +328,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <h2>Opslaan als template</h2>
     <label>Naam van de template</label>
     <input type="text" id="templateName" placeholder="bijv. Caravan zomer">
-    <div class="toggle-row">
-      <div class="toggle-row-text">
-        <span>Delen met andere gebruikers</span>
-        <small>Iedereen met een account kan deze template gebruiken</small>
-      </div>
-      <label class="toggle"><input type="checkbox" id="templateShared"><span class="toggle-slider"></span></label>
-    </div>
+
     <div class="modal-btns">
       <button onclick="closeModal('saveTemplateModal')">Annuleren</button>
       <button class="primary" onclick="confirmSaveTemplate()">Opslaan</button>
@@ -390,8 +382,8 @@ const db = getDatabase(fbApp);
 const auth = getAuth(fbApp);
 
 let currentUser=null, currentListId=null, currentListIsTemplate=false;
-let userData={lists:{},templates:{},archive:{}}, sharedTemplates={};
-let userDataRef=null, sharedRef=null, ignoreNext=false;
+let userData={lists:{},templates:{},archive:{}};
+let userDataRef=null, ignoreNext=false;
 let authMode='login';
 let pendingNoteKey=null; // {si, ii}
 
@@ -409,7 +401,6 @@ onAuthStateChanged(auth, user => {
     document.getElementById('loginView').style.display='flex';
     document.getElementById('appView').style.display='none';
     if(userDataRef) off(userDataRef);
-    if(sharedRef) off(sharedRef);
   }
 });
 
@@ -453,7 +444,6 @@ function friendlyError(c){ return({'auth/user-not-found':'Geen account gevonden.
 function subscribeData(){
   const uid=currentUser.uid;
   userDataRef=ref(db,`users/${uid}`);
-  sharedRef=ref(db,'sharedTemplates');
   onValue(userDataRef,snap=>{
     if(ignoreNext){ignoreNext=false;return;}
     const val=snap.val();
@@ -469,12 +459,9 @@ function subscribeData(){
     setSyncStatus(true);
     if(currentListId) renderChecklist(); else renderHome();
   },()=>setSyncStatus(false));
-  onValue(sharedRef,snap=>{ sharedTemplates=snap.val()||{}; if(!currentListId) renderHome(); });
 }
 
 async function saveUserData(){ ignoreNext=true; await set(userDataRef,userData); setSyncStatus(true); }
-async function saveSharedTemplate(id,data){ await set(ref(db,`sharedTemplates/${id}`),data); }
-async function deleteSharedTemplate(id){ await set(ref(db,`sharedTemplates/${id}`),null); }
 function setSyncStatus(on){ document.getElementById('dot').className='sync-dot'+(on?'':' off'); }
 function showStatus(msg,ms=2000){ const el=document.getElementById('status'); el.textContent=msg; if(ms) setTimeout(()=>{if(el.textContent===msg)el.textContent='';},ms); }
 
@@ -519,28 +506,18 @@ function renderHome(){
   // Templates
   const tg=document.getElementById('templatesGrid'); tg.innerHTML='';
   Object.values(userData.templates||{}).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
-    const isShared=!!sharedTemplates[item.id];
     const card=document.createElement('div'); card.className='list-card';
-    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span>${isShared?'<span class="badge badge-shared">GEDEELD</span>':''}</div>
+    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span></div>
       <div class="list-card-body"><h3 id="cth-${item.id}">${item.title||'Naamloos'}</h3>
       <div class="meta">${(item.sections||[]).length} categorieën</div></div>
       <div class="card-actions">
         <button class="card-action-btn" onclick="event.stopPropagation();inlineRename('${item.id}','tpl')">✏️ Hernoemen</button>
-        <button class="card-action-btn danger" onclick="event.stopPropagation();deleteTpl('${item.id}',${isShared})">✕ Verwijderen</button>
+        <button class="card-action-btn danger" onclick="event.stopPropagation();deleteTpl('${item.id}')">✕ Verwijderen</button>
       </div>`;
     card.querySelector('.list-card-body').onclick=()=>openList(item.id,true,false);
     tg.appendChild(card);
   });
-  const alreadyCopied=new Set(Object.values(userData.templates||{}).map(t=>t.copiedFrom).filter(Boolean));
-  Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email&&!alreadyCopied.has(t.id)).sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).forEach(item=>{
-    const card=document.createElement('div'); card.className='list-card';
-    card.innerHTML=`<div><span class="badge badge-tpl">TEMPLATE</span><span class="badge badge-owner">VAN ${item.owner||'ander'}</span></div>
-      <div class="list-card-body"><h3>${item.title||'Naamloos'}</h3><div class="meta">${(item.sections||[]).length} categorieën · Gedeeld</div></div>
-      <div class="card-actions">
-        <button class="card-action-btn" onclick="event.stopPropagation();copySharedTemplate('${item.id}')">📋 Kopieer naar mijn templates</button>
-      </div>`;
-    tg.appendChild(card);
-  });
+
   const nt=document.createElement('div'); nt.className='new-card'; nt.innerHTML='<span>+</span><p>Nieuwe template</p>'; nt.onclick=createBlankTemplate; tg.appendChild(nt);
 
   // Archive
@@ -588,7 +565,7 @@ function inlineRename(id, type){
 window.inlineRename=inlineRename;
 
 window.deleteList=function(id){ if(!confirm('Lijst verwijderen?')) return; delete userData.lists[id]; saveUserData(); renderHome(); };
-window.deleteTpl=function(id,isShared){ if(!confirm('Template verwijderen?')) return; delete userData.templates[id]; if(isShared) deleteSharedTemplate(id); saveUserData(); renderHome(); };
+window.deleteTpl=function(id){ if(!confirm('Template verwijderen?')) return; delete userData.templates[id]; saveUserData(); renderHome(); };
 window.deleteArchived=function(id){ if(!confirm('Definitief verwijderen?')) return; delete userData.archive[id]; saveUserData(); renderHome(); };
 
 window.archiveFromHome=function(id){
@@ -607,8 +584,7 @@ window.unarchiveList=function(id){
 function openNewListModal(){
   const opts=document.getElementById('templateOptions'); opts.innerHTML='';
   const blank=document.createElement('button'); blank.className='template-opt blank selected'; blank.dataset.tpl='blank'; blank.textContent='Lege lijst'; blank.onclick=()=>selectTpl('blank'); opts.appendChild(blank);
-  const copiedIds=new Set(Object.values(userData.templates||{}).map(t=>t.copiedFrom).filter(Boolean));
-  [...Object.values(userData.templates||{}),...Object.values(sharedTemplates||{}).filter(t=>t.owner!==currentUser.email&&!copiedIds.has(t.id))].forEach(tpl=>{
+  [...Object.values(userData.templates||{})].forEach(tpl=>{
     const btn=document.createElement('button'); btn.className='template-opt'; btn.dataset.tpl=tpl.id; btn.textContent=tpl.title; btn.onclick=()=>selectTpl(tpl.id); opts.appendChild(btn);
   });
   document.getElementById('newListName').value='';
@@ -621,18 +597,11 @@ function openNewListModal(){
 function selectTpl(id){ document.querySelectorAll('.template-opt').forEach(b=>b.classList.toggle('selected',b.dataset.tpl===id)); }
 window.closeModal=function(id){ document.getElementById(id).classList.remove('open'); };
 
-window.copySharedTemplate=function(id){
-  const item=sharedTemplates[id]; if(!item) return;
-  const newId='tpl_'+Date.now();
-  userData.templates[newId]={...JSON.parse(JSON.stringify(item)),id:newId,createdAt:Date.now(),owner:currentUser.email,copiedFrom:id};
-  saveUserData(); renderHome();
-  showStatus('Template gekopieerd naar jouw templates!',2500);
-};
 
 window.createList=function(){
   const name=document.getElementById('newListName').value.trim(); if(!name){document.getElementById('newListName').focus();return;}
   const sel=document.querySelector('.template-opt.selected'), tplId=sel?sel.dataset.tpl:'blank';
-  const tpl=tplId!=='blank'?(userData.templates[tplId]||sharedTemplates[tplId]):null;
+  const tpl=tplId!=='blank'?(userData.templates[tplId]||null):null;
   const id='list_'+Date.now();
   userData.lists[id]={id,title:name,sections:tpl?JSON.parse(JSON.stringify(tpl.sections)):[],notes:tpl&&tpl.notes?JSON.parse(JSON.stringify(tpl.notes)):{},checked:{},createdAt:Date.now(),
     tripDate:document.getElementById('newListDate').value||null,
@@ -650,20 +619,18 @@ function createBlankTemplate(){
 window.saveAsTemplate=function(){
   const cur=currentData();
   document.getElementById('templateName').value=cur.title+' (template)';
-  document.getElementById('templateShared').checked=false;
   document.getElementById('saveTemplateModal').classList.add('open');
   setTimeout(()=>document.getElementById('templateName').focus(),100);
 };
 
 window.confirmSaveTemplate=async function(){
   const name=document.getElementById('templateName').value.trim(); if(!name) return;
-  const shared=document.getElementById('templateShared').checked, cur=currentData();
+  const cur=currentData();
   const id='tpl_'+Date.now();
   const tplData={id,title:name,sections:JSON.parse(JSON.stringify(cur.sections||[])),createdAt:Date.now(),owner:currentUser.email};
   userData.templates[id]=tplData;
-  if(shared) await saveSharedTemplate(id,tplData);
   closeModal('saveTemplateModal'); saveUserData();
-  showStatus(shared?'Opgeslagen als gedeelde template!':'Opgeslagen als template!',3000);
+  showStatus('Opgeslagen als template!',3000);
 };
 
 window.duplicateList=function(){
