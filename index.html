@@ -770,22 +770,23 @@ function renderChecklist(){
         const store=currentListIsTemplate?userData.templates:(userData.lists[currentListId]?userData.lists:userData.archive);
         const d=store[currentListId];
         if(fsi===tsi){
-          // same section — reorder
           const items=d.sections[fsi].items; const [moved]=items.splice(fii,1); items.splice(tii,0,moved);
-          // remap checked keys within section
-          const nc={...d.checked||{}};
-          // rebuild keys for this section
-          const sectionKeys=Object.keys(nc).filter(k=>k.startsWith(fsi+'-')&&!k.includes('note'));
-          const vals={}; sectionKeys.forEach(k=>{ const idx=parseInt(k.split('-')[1]); vals[idx]=nc[k]; delete nc[k]; });
-          const newItems=d.sections[fsi].items;
-          // re-assign: old index → new position
-          const oldOrder=[...Array(newItems.length).keys()];
-          oldOrder.forEach(newIdx=>{ const oldVal=vals[newIdx]; if(oldVal!==undefined) nc[`${fsi}-${newIdx}`]=oldVal; });
-          d.checked=nc;
+          const oldLen=items.length;
+          const remapIdx=(oldIdx)=>{ if(oldIdx===fii) return tii; if(fii<tii&&oldIdx>fii&&oldIdx<=tii) return oldIdx-1; if(fii>tii&&oldIdx>=tii&&oldIdx<fii) return oldIdx+1; return oldIdx; };
+          const nc={}, nn={};
+          Object.keys(d.checked||{}).forEach(k=>{ const p=k.split('-'); if(parseInt(p[0])===fsi&&!k.includes('note')){ const ni=remapIdx(parseInt(p[1])); nc[`${fsi}-${ni}`]=d.checked[k]; } else nc[k]=d.checked[k]; });
+          Object.keys(d.notes||{}).forEach(k=>{ const p=k.split('-'); if(parseInt(p[0])===fsi&&p[2]==='note'){ const ni=remapIdx(parseInt(p[1])); if(d.notes[k]) nn[`${fsi}-${ni}-note`]=d.notes[k]; } else nn[k]=d.notes[k]; });
+          d.checked=nc; d.notes=nn;
         } else {
-          // cross-section move
           const [moved]=d.sections[fsi].items.splice(fii,1);
           d.sections[tsi].items.splice(tii,0,moved);
+          const movedNote=d.notes&&d.notes[`${fsi}-${fii}-note`];
+          const nc={}, nn={};
+          Object.keys(d.checked||{}).forEach(k=>{ const p=k.split('-'); const ki=parseInt(p[0]),ii2=parseInt(p[1]); if(ki===fsi&&ii2===fii) return; if(ki===fsi&&ii2>fii) nc[`${fsi}-${ii2-1}`]=d.checked[k]; else nc[k]=d.checked[k]; });
+          nc[`${tsi}-${tii}`]=false;
+          Object.keys(d.notes||{}).forEach(k=>{ const p=k.split('-'); if(p[2]!=='note') return; const ki=parseInt(p[0]),ii2=parseInt(p[1]); if(ki===fsi&&ii2===fii) return; if(ki===fsi&&ii2>fii) nn[`${fsi}-${ii2-1}-note`]=d.notes[k]; else if(ki===tsi&&ii2>=tii) nn[`${tsi}-${ii2+1}-note`]=d.notes[k]; else nn[k]=d.notes[k]; });
+          if(movedNote) nn[`${tsi}-${tii}-note`]=movedNote;
+          d.checked=nc; d.notes=nn;
         }
         renderChecklist(); saveUserData();
       });
