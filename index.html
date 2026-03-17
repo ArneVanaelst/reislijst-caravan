@@ -417,7 +417,7 @@ window.toggleAuthMode=function(){
   authMode=authMode==='login'?'register':'login';
   const r=authMode==='register';
   document.getElementById('loginSubtitle').textContent=r?'Maak je account aan':'Inloggen met je account';
-  document.getElementById('loginBtn'||document.querySelector('.login-btn')).textContent=r?'Account aanmaken':'Inloggen';
+  document.querySelector('.login-btn').textContent=r?'Account aanmaken':'Inloggen';
   document.getElementById('loginSwitch').innerHTML=r?'Al een account? <span>Inloggen</span>':'Nog geen account? <span>Registreer hier</span>';
   document.getElementById('loginPasswordConfirmWrap').style.display=r?'block':'none';
   document.getElementById('loginForgot').style.display=r?'none':'block';
