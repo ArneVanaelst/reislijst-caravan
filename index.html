@@ -486,7 +486,14 @@ function renderChecklist(){
     div.addEventListener('dragend',()=>{ div.classList.remove('dragging'); document.querySelectorAll('.section').forEach(s=>s.classList.remove('drag-over')); });
     div.addEventListener('dragover',e=>{ e.preventDefault(); e.dataTransfer.dropEffect='move'; document.querySelectorAll('.section').forEach(s=>s.classList.remove('drag-over')); div.classList.add('drag-over'); });
     div.addEventListener('dragleave',()=>div.classList.remove('drag-over'));
-    div.addEventListener('drop',e=>{ e.preventDefault(); div.classList.remove('drag-over'); const fromSi=parseInt(e.dataTransfer.getData('text/plain')); const toSi=parseInt(div.dataset.si); if(fromSi===toSi) return; updateCurrent(d=>{ const secs=d.sections; const [moved]=secs.splice(fromSi,1); secs.splice(toSi,0,moved); const nc={}; Object.keys(d.checked||{}).forEach(k=>{ const p=k.split('-'); const ki=parseInt(p[0]); let nki=ki; if(ki===fromSi) nki=toSi; else if(fromSi<toSi && ki>fromSi && ki<=toSi) nki=ki-1; else if(fromSi>toSi && ki>=toSi && ki<fromSi) nki=ki+1; nc[nki+'-'+p.slice(1).join('-')]=d.checked[k]; }); d.checked=nc; }); });
+    div.addEventListener('drop',e=>{ e.preventDefault(); div.classList.remove('drag-over'); const fromSi=parseInt(e.dataTransfer.getData('text/plain')); const toSi=parseInt(div.dataset.si); if(fromSi===toSi) return;
+    const store=currentListIsTemplate?userData.templates:userData.lists;
+    const d=store[currentListId];
+    const secs=d.sections; const [moved]=secs.splice(fromSi,1); secs.splice(toSi,0,moved);
+    const nc={}; Object.keys(d.checked||{}).forEach(k=>{ const p=k.split('-'); const ki=parseInt(p[0]); let nki=ki; if(ki===fromSi) nki=toSi; else if(fromSi<toSi && ki>fromSi && ki<=toSi) nki=ki-1; else if(fromSi>toSi && ki>=toSi && ki<fromSi) nki=ki+1; nc[nki+'-'+p.slice(1).join('-')]=d.checked[k]; }); d.checked=nc;
+    renderChecklist();
+    saveUserData();
+    });
   });
   const pct=total?Math.round(done/total*100):0;
   document.getElementById('pb').style.width=pct+'%';
