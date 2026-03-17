@@ -464,8 +464,6 @@ function subscribeData(){
       if(!userData.archive) userData.archive={};
     } else {
       userData={lists:{},templates:{},archive:{}};
-      const tid='tpl_'+Date.now();
-      userData.templates[tid]={id:tid,title:"Caravan-checklist Italië",sections:JSON.parse(JSON.stringify(caravanSections)),createdAt:Date.now(),owner:currentUser.email};
       saveUserData();
     }
     setSyncStatus(true);
