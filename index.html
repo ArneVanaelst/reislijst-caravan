@@ -437,7 +437,7 @@ window.handleAuth=async function(){
     if(pass.length<6){ showLoginErr("Wachtwoord moet minstens 6 tekens zijn."); return; }
     try{ showLoginErr('Account aanmaken...'); await createUserWithEmailAndPassword(auth,email,pass); } catch(e){ showLoginErr('Fout: '+e.code+' — '+e.message); }
   } else {
-    try{ await signInWithEmailAndPassword(auth,email,pass); } catch(e){ showLoginErr('Fout: '+e.code+' — '+e.message); }
+    try{ await signInWithEmailAndPassword(auth,email,pass); showLoginErr('Login gelukt, laden...'); } catch(e){ showLoginErr('Fout: '+(e.code||'onbekend')+' / '+(e.message||'geen detail')+' / auth:'+(auth?'ok':'null')); }
   }
 };
 
