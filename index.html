@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mijn Checklists</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Checklist">
+<meta name="theme-color" content="#1565C0">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="icon" type="image/png" href="icon.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f0f6ff;min-height:100vh}
@@ -145,6 +151,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 /* ITEMS WITH DRAG */
 .item{display:flex;align-items:flex-start;gap:6px;padding:3px 10px;border-radius:4px;margin:1px 3px;position:relative}
 .item:hover{background:#f5f9ff}
+@media(hover:none){.item:hover{background:transparent}}
 .item.done{opacity:0.38}
 .item.done .lbl{text-decoration:line-through}
 .item.item-dragging{opacity:0.3}
@@ -152,7 +159,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .item-drag-handle{font-size:11px;color:#c5d9f0;cursor:grab;flex-shrink:0;padding-top:3px;user-select:none;opacity:0}
 .item:hover .item-drag-handle{opacity:1}
 .item-drag-handle:active{cursor:grabbing}
-.box{width:14px;height:14px;border:1.5px solid #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;cursor:pointer;transition:all 0.15s;margin-top:3px}
+.box{width:14px;height:14px;border:1.5px solid #90CAF9;border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:white;cursor:pointer;transition:all 0.15s;margin-top:3px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 .item.done .box{background:#1565C0;border-color:#1565C0}
 .item-content{flex:1;min-width:0}
 .lbl{font-size:0.76rem;color:#1e2d3d;line-height:1.4;cursor:pointer;border-radius:3px;padding:1px 3px;display:block}
@@ -228,6 +235,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div id="loginPasswordConfirmWrap" style="display:none">
       <label>Wachtwoord bevestigen</label>
       <input type="password" id="loginPasswordConfirm" placeholder="••••••••">
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-top:14px">
+      <input type="checkbox" id="stayLoggedIn" checked style="width:16px;height:16px;accent-color:#1565C0;cursor:pointer">
+      <label for="stayLoggedIn" style="font-size:0.78rem;color:#5a87c0;cursor:pointer;font-weight:600">Aangemeld blijven</label>
     </div>
     <button class="login-btn" onclick="handleAuth()">Inloggen</button>
     <div class="login-err" id="loginErr"></div>
@@ -380,17 +391,7 @@ const caravanSections = [
 const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 const auth = getAuth(fbApp);
-// Use indexedDB persistence (works in Brave/Safari), fall back to session then memory
-(async () => {
-  try { await setPersistence(auth, indexedDBLocalPersistence); }
-  catch(e1) {
-    try { await setPersistence(auth, browserSessionPersistence); }
-    catch(e2) {
-      try { await setPersistence(auth, inMemoryPersistence); }
-      catch(e3) { console.warn('Could not set persistence', e3); }
-    }
-  }
-})();
+
 
 let currentUser=null, currentListId=null, currentListIsTemplate=false;
 let userData={lists:{},templates:{},archive:{}};
@@ -431,6 +432,12 @@ window.handleAuth=async function(){
   const pass=document.getElementById('loginPassword').value;
   showLoginErr('Bezig met inloggen...');
   if(!ALLOWED_EMAILS.includes(email)){ showLoginErr("Dit e-mailadres heeft geen toegang."); return; }
+  const stay = document.getElementById('stayLoggedIn')?.checked !== false;
+  try {
+    await setPersistence(auth, stay ? indexedDBLocalPersistence : browserSessionPersistence);
+  } catch(e) {
+    try { await setPersistence(auth, inMemoryPersistence); } catch(e2) {}
+  }
   if(authMode==='register'){
     const c=document.getElementById('loginPasswordConfirm').value;
     if(pass!==c){ showLoginErr("Wachtwoorden komen niet overeen."); return; }
@@ -731,6 +738,7 @@ function renderChecklist(){
 
       const box=document.createElement('div'); box.className='box'; if(checked) box.textContent='✓';
       box.onclick=()=>toggleItem(si,ii);
+      box.addEventListener('touchend', e=>{ e.preventDefault(); e.stopPropagation(); toggleItem(si,ii); });
 
       const content=document.createElement('div'); content.className='item-content';
       const lbl=document.createElement('span'); lbl.className='lbl'; lbl.textContent=item; lbl.title='Klik om te bewerken'; lbl.onclick=()=>editItemLabel(si,ii,lbl);
