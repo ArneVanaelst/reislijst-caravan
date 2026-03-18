@@ -351,7 +351,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, onValue, set, off } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, browserLocalPersistence, browserSessionPersistence, inMemoryPersistence, setPersistence } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, indexedDBLocalPersistence, browserSessionPersistence, inMemoryPersistence, setPersistence } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey:            "AIzaSyAXPAjc_gV56nSH7pEwa4aICVAjaoNx7kc",
@@ -380,9 +380,9 @@ const caravanSections = [
 const fbApp = initializeApp(firebaseConfig);
 const db = getDatabase(fbApp);
 const auth = getAuth(fbApp);
-// Try localStorage first, fall back to sessionStorage, then inMemory (for strict browsers like Brave)
+// Use indexedDB persistence (works in Brave/Safari), fall back to session then memory
 (async () => {
-  try { await setPersistence(auth, browserLocalPersistence); }
+  try { await setPersistence(auth, indexedDBLocalPersistence); }
   catch(e1) {
     try { await setPersistence(auth, browserSessionPersistence); }
     catch(e2) {
